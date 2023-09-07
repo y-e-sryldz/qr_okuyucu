@@ -103,6 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
         );
       } //kişi
       else if (qrCodeContent.startsWith("BEGIN:VCARD")) {
+        print(scanData.code!);
         controller.pauseCamera();
         Navigator.pushReplacement(
           context,

@@ -58,15 +58,36 @@ class _sonuc_ekraniState extends State<sonuc_ekrani> {
           if (sira == 1)
             Expanded(
               child: Stack(
-                children: [],
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ListTile(
+                        title: Text("Link"),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(veri),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 13),
+                        child: Divider(
+                          height: 10, // Çizgi yüksekliğini ayarlayabilirsiniz
+                          color:
+                              Colors.grey, // Çizgi rengini ayarlayabilirsiniz
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           if (sira == 2)
             Expanded(
               child: Stack(
-                children: [
-                  Text("kişi"),
-                ],
+                children: [],
               ),
             ),
           if (sira == 3)
@@ -105,6 +126,7 @@ class _sonuc_ekraniState extends State<sonuc_ekrani> {
             Expanded(
               child: Stack(
                 children: [
+                  /*
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -115,7 +137,7 @@ class _sonuc_ekraniState extends State<sonuc_ekrani> {
                       Text("Yer: $location"),
                       Text("Açıklama: $description"),
                     ],
-                  ),
+                  ),*/
                 ],
               ),
             ),
