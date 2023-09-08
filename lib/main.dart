@@ -101,144 +101,65 @@ class _MyHomePageState extends State<MyHomePage> {
           MaterialPageRoute(
               builder: (context) => sonuc_ekrani(1, scanData.code!)),
         );
-      } //kişi
+      }
+      //kişi
       else if (qrCodeContent.startsWith("BEGIN:VCARD")) {
-        print(scanData.code!);
         controller.pauseCamera();
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
               builder: (context) => sonuc_ekrani(2, scanData.code!)),
         );
-      } //konum
+      }
+      //konum
       else if (qrCodeContent.contains("latitude") ||
           qrCodeContent.contains("longitude") ||
           qrCodeContent.startsWith("http://maps.google.com/maps?q=")) {
-        // QR kod bir Google Haritalar konum URL'si içeriyorsa
-        String coordinates =
-            qrCodeContent.substring("http://maps.google.com/maps?q=".length);
-        // Koordinatları ayır
-        List<String> parts = coordinates.split(",");
-        if (parts.length == 2) {
-          String latitude = parts[0];
-          String longitude = parts[1];
-
-          // Google Haritalar'da konumu açmak için URL oluştur
-          String mapUrl = "http://maps.google.com/maps?q=$latitude,$longitude";
-        }
         controller.pauseCamera();
-      } else if (qrCodeContent.startsWith("WIFI:")) {
-        // QR kod bir Wi-Fi bağlantısı içeriyorsa
-        List<String> parts = qrCodeContent.split(';');
-        String ssid = "";
-        String password = "";
-
-        for (String part in parts) {
-          if (part.startsWith("S:")) {
-            ssid = part.substring(2);
-          } else if (part.startsWith("P:")) {
-            password = part.substring(2);
-          }
-        }
-
-        if (ssid.isNotEmpty) {
-          print("SSID: $ssid");
-        }
-        if (password.isNotEmpty) {
-          print("Şifre: $password");
-        }
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => sonuc_ekrani(3, scanData.code!)),
+        );
+      }
+      //wifi
+      else if (qrCodeContent.startsWith("WIFI:")) {
         controller.pauseCamera();
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => sonuc_ekrani(4, scanData.code!)),
+        );
       }
       //mail
       else if (qrCodeContent.startsWith("mailto:")) {
-        // "mailto:" kısmını atlayın
-        qrCodeContent = qrCodeContent.substring(7);
-
-        // E-posta adresini ayıklayın
-        int emailEndIndex = qrCodeContent.indexOf("?");
-        String emailAddress = qrCodeContent.substring(0, emailEndIndex);
-
-        // E-posta konusu ve içeriğini ayıklayın (varsa)
-        String emailSubject = "";
-        String emailBody = "";
-
-        int subjectIndex = qrCodeContent.indexOf("subject=");
-        if (subjectIndex != -1) {
-          int bodyIndex = qrCodeContent.indexOf("&body=");
-          if (bodyIndex != -1) {
-            emailSubject = qrCodeContent.substring(subjectIndex + 8, bodyIndex);
-            emailBody = qrCodeContent.substring(bodyIndex + 6);
-          } else {
-            emailSubject = qrCodeContent.substring(subjectIndex + 8);
-          }
-        } else {
-          int bodyIndex = qrCodeContent.indexOf("&body=");
-          if (bodyIndex != -1) {
-            emailBody = qrCodeContent.substring(bodyIndex + 6);
-          }
-        }
-
-        // Ayıklanan bilgileri kullanabilirsiniz
-        print("E-posta Adresi: $emailAddress");
-        print("Konu: $emailSubject");
-        print("İçerik: $emailBody");
         controller.pauseCamera();
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => sonuc_ekrani(5, scanData.code!)),
+        );
       }
       //SMS
       else if (qrCodeContent.startsWith("SMSTO:") ||
           qrCodeContent.startsWith("SMS:")) {
-        // "smsto:" veya "sms:" kısmını atlayın
-        qrCodeContent = qrCodeContent.substring(qrCodeContent.indexOf(":") + 1);
-
-        // SMS alıcısını ve mesaj içeriğini ayıklayın
-        int messageBodyIndex = qrCodeContent.indexOf(":");
-        if (messageBodyIndex != -1) {
-          String recipient = qrCodeContent.substring(0, messageBodyIndex);
-          String messageBody = qrCodeContent.substring(messageBodyIndex + 1);
-
-          // Ayıklanan bilgileri kullanabilirsiniz
-          print("Alıcı: $recipient");
-          print("Mesaj İçeriği: $messageBody");
-        } else {
-          // SMS içeriği bulunamadı
-          print("Bu bir SMS QR kodu değil.");
-        }
         controller.pauseCamera();
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => sonuc_ekrani(6, scanData.code!)),
+        );
       }
       //Etkinlik
       else if (qrCodeContent.startsWith("BEGIN:VEVENT") ||
           qrCodeContent.startsWith("BEGIN:VCALENDAR")) {
-        // QR kod etkinlik bilgisi içeriyorsa
-        // İçerikten etkinlik ayrıntılarını çıkarın
-
-        List<String> lines = qrCodeContent.split('\n');
-
-        String summary = "";
-        String location = "";
-        String dtStart = "";
-        String dtEnd = "";
-        String description = "";
-
-        for (String line in lines) {
-          if (line.startsWith("SUMMARY:")) {
-            summary = line.substring("SUMMARY:".length);
-          } else if (line.startsWith("LOCATION:")) {
-            location = line.substring("LOCATION:".length);
-          } else if (line.startsWith("DTSTART:")) {
-            dtStart = line.substring("DTSTART:".length);
-          } else if (line.startsWith("DTEND:")) {
-            dtEnd = line.substring("DTEND:".length);
-          } else if (line.startsWith("DESCRIPTION:")) {
-            description = line.substring("DESCRIPTION:".length);
-          }
-        }
-        print(summary);
-        print(dtStart);
-        print(dtEnd);
-        print(location);
-        print(description);
-        // Etkinlik bilgilerini kullanın veya gösterin
         controller.pauseCamera();
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => sonuc_ekrani(7, scanData.code!)),
+        );
+
       } else {
         // İçeriği belirli bir formata uyduramıyorsanız veya
         // farklı bir veri türü temsil ediyorsa, gereken işlemi yapın,
