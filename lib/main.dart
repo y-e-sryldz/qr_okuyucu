@@ -66,16 +66,15 @@ class _MyHomePageState extends State<MyHomePage> {
   final String _adUnitId1 = Platform.isAndroid
       ? 'ca-app-pub-3940256099942544/6300978111'
       : 'ca-app-pub-3940256099942544/2934735716';
-
-  final String _adUnitId3 = Platform.isAndroid
-    ? 'ca-app-pub-3940256099942544/1033173712'
-    : 'ca-app-pub-3940256099942544/4411468910';
+    final String _adUnitId = Platform.isAndroid
+      ? 'ca-app-pub-3940256099942544/1033173712'
+      : 'ca-app-pub-3940256099942544/4411468910';
 
   @override
   void initState() {
     super.initState();
-    _loadAd(); // Banner reklamı yükleme işlemi
-    _loadAds(context); // Arka planda interstitial reklamı yükleme işlemi
+    _loadAd1(); // Banner reklamı yükleme işlemi
+    _loadAd(context);
   }
 
   int _selectedIndex = 1; // İlk seçili sayfa
@@ -94,7 +93,6 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _onQRViewCreated(QRViewController controller) {
-    setState(() {});
 
     controller.scannedDataStream.listen((scanData) {
       qrCodeContent = scanData.code!;
@@ -102,6 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
       //url
       if (qrCodeContent.startsWith("https://")) {
         controller.pauseCamera();
+        _interstitialAd?.show();
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -111,6 +110,7 @@ class _MyHomePageState extends State<MyHomePage> {
       //kişi
       else if (qrCodeContent.startsWith("BEGIN:VCARD")) {
         controller.pauseCamera();
+        _interstitialAd?.show();
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -122,6 +122,7 @@ class _MyHomePageState extends State<MyHomePage> {
           qrCodeContent.contains("longitude") ||
           qrCodeContent.startsWith("http://maps.google.com/maps?q=")) {
         controller.pauseCamera();
+        _interstitialAd?.show();
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -131,6 +132,7 @@ class _MyHomePageState extends State<MyHomePage> {
       //wifi
       else if (qrCodeContent.startsWith("WIFI:")) {
         controller.pauseCamera();
+        _interstitialAd?.show();
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -140,6 +142,7 @@ class _MyHomePageState extends State<MyHomePage> {
       //mail
       else if (qrCodeContent.startsWith("mailto:")) {
         controller.pauseCamera();
+        _interstitialAd?.show();
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -150,6 +153,7 @@ class _MyHomePageState extends State<MyHomePage> {
       else if (qrCodeContent.startsWith("SMSTO:") ||
           qrCodeContent.startsWith("SMS:")) {
         controller.pauseCamera();
+        _interstitialAd?.show();
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -246,7 +250,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  void _loadAd() async {
+  void _loadAd1() async {
     BannerAd(
       adUnitId: _adUnitId1,
       request: const AdRequest(),
@@ -265,6 +269,29 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     ).load();
   }
+    void _loadAd(BuildContext context) async {
+    InterstitialAd.load(
+        adUnitId: _adUnitId,
+        request: const AdRequest(),
+        adLoadCallback: InterstitialAdLoadCallback(
+          onAdLoaded: (InterstitialAd ad) {
+            ad.fullScreenContentCallback = FullScreenContentCallback(
+                onAdShowedFullScreenContent: (ad) {},
+                onAdImpression: (ad) {},
+                onAdFailedToShowFullScreenContent: (ad, err) {
+                  ad.dispose();
+                },
+                onAdDismissedFullScreenContent: (ad) {
+                  ad.dispose();
+                },
+                onAdClicked: (ad) {});
+            _interstitialAd = ad;
+          },
+          onAdFailedToLoad: (LoadAdError error) {
+            print('InterstitialAd failed to load: $error');
+          },
+        ));
+  }
 
   @override
   void dispose() {
@@ -273,31 +300,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.dispose();
   }
 }
-void _loadAds(BuildContext context) async {
-  InterstitialAd.load(
-    adUnitId: _adUnitId3,
-    request: const AdRequest(),
-    adLoadCallback: InterstitialAdLoadCallback(
-      onAdLoaded: (InterstitialAd ad) {
-        ad.fullScreenContentCallback = FullScreenContentCallback(
-          onAdShowedFullScreenContent: (ad) {},
-          onAdImpression: (ad) {},
-          onAdFailedToShowFullScreenContent: (ad, err) {
-            ad.dispose();
-          },
-          onAdDismissedFullScreenContent: (ad) {
-            ad.dispose();
-          },
-          onAdClicked: (ad) {},
-        );
-        _interstitialAd = ad;
-      },
-      onAdFailedToLoad: (LoadAdError error) {
-        print('InterstitialAd failed to load: $error');
-      },
-    ),
-  );
-}
+
 
 class QRFramePainter extends CustomPainter {
   @override
