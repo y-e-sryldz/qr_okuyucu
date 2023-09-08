@@ -172,11 +172,13 @@ class _MyHomePageState extends State<MyHomePage> {
         );
 
       } else {
-        // İçeriği belirli bir formata uyduramıyorsanız veya
-        // farklı bir veri türü temsil ediyorsa, gereken işlemi yapın,
-        print("AAAAAAAAAAAAAAAAAAAA");
-        print(scanData.code!);
         controller.pauseCamera();
+        _interstitialAd?.show();
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => sonuc_ekrani(8, scanData.code!)),
+        );
       }
     });
   }

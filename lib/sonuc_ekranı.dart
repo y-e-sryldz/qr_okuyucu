@@ -304,7 +304,28 @@ class _sonuc_ekraniState extends State<sonuc_ekrani> {
             Expanded(
               child: Stack(
                 children: [
-                  Text("kişi"),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ListTile(
+                        title: Text("Metin"),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(veri),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 13),
+                        child: Divider(
+                          height: 10, // Çizgi yüksekliğini ayarlayabilirsiniz
+                          color:
+                              Colors.grey, // Çizgi rengini ayarlayabilirsiniz
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),
