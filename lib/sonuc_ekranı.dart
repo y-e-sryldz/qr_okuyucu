@@ -370,7 +370,6 @@ String formatDateTime(String dateTimeStr) {
   }
 }
 
-
   Map<String, String> parseVCard(String vCardData) {
     Map<String, String> vCardInfo = {};
     List<String> lines = vCardData.split('\n');

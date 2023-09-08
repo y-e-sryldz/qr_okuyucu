@@ -58,18 +58,24 @@ class _MyHomePageState extends State<MyHomePage> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   bool _showQRView = false; // QRView'ı göstermek için kullanılacak değişken
   String qrCodeContent = "";
-
+  
   bool _isAdLoaded = false;
 
+  InterstitialAd? _interstitialAd;
   BannerAd? _bannerAd;
-  final String _adUnitId = Platform.isAndroid
+  final String _adUnitId1 = Platform.isAndroid
       ? 'ca-app-pub-3940256099942544/6300978111'
       : 'ca-app-pub-3940256099942544/2934735716';
+
+  final String _adUnitId3 = Platform.isAndroid
+    ? 'ca-app-pub-3940256099942544/1033173712'
+    : 'ca-app-pub-3940256099942544/4411468910';
 
   @override
   void initState() {
     super.initState();
-    _loadAd();
+    _loadAd(); // Banner reklamı yükleme işlemi
+    _loadAds(context); // Arka planda interstitial reklamı yükleme işlemi
   }
 
   int _selectedIndex = 1; // İlk seçili sayfa
@@ -154,6 +160,7 @@ class _MyHomePageState extends State<MyHomePage> {
       else if (qrCodeContent.startsWith("BEGIN:VEVENT") ||
           qrCodeContent.startsWith("BEGIN:VCALENDAR")) {
         controller.pauseCamera();
+        _interstitialAd?.show();
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -241,7 +248,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _loadAd() async {
     BannerAd(
-      adUnitId: _adUnitId,
+      adUnitId: _adUnitId1,
       request: const AdRequest(),
       size: AdSize.banner,
       listener: BannerAdListener(
@@ -262,8 +269,34 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void dispose() {
     _bannerAd?.dispose();
+    _interstitialAd?.dispose();
     super.dispose();
   }
+}
+void _loadAds(BuildContext context) async {
+  InterstitialAd.load(
+    adUnitId: _adUnitId3,
+    request: const AdRequest(),
+    adLoadCallback: InterstitialAdLoadCallback(
+      onAdLoaded: (InterstitialAd ad) {
+        ad.fullScreenContentCallback = FullScreenContentCallback(
+          onAdShowedFullScreenContent: (ad) {},
+          onAdImpression: (ad) {},
+          onAdFailedToShowFullScreenContent: (ad, err) {
+            ad.dispose();
+          },
+          onAdDismissedFullScreenContent: (ad) {
+            ad.dispose();
+          },
+          onAdClicked: (ad) {},
+        );
+        _interstitialAd = ad;
+      },
+      onAdFailedToLoad: (LoadAdError error) {
+        print('InterstitialAd failed to load: $error');
+      },
+    ),
+  );
 }
 
 class QRFramePainter extends CustomPainter {
