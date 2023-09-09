@@ -438,10 +438,36 @@ class _URLState extends State<URL> {
           },
         ),
       ),
-      body: Column(
-        children: [
-        
-        ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal:25 ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 20,),
+              Text("URL",
+                style: TextStyle(
+                  fontSize: 16, // Metin boyutunu burada ayarlayabilirsiniz
+                ),
+              ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 7),
+              child: TextField(
+                  decoration: InputDecoration(
+                    hintText: "URL",
+                    hintStyle: TextStyle(color: Colors.grey),
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                      color: Colors.grey,
+                    )),
+                  ),
+                  style: TextStyle(
+                      color: Colors.black), // Yazı rengini beyaz yapar
+                ),
+            ),
+            ],
+          ),
+        ),
       ),
       bottomNavigationBar: Container(
         // Reklamı içeren alt bar
@@ -528,10 +554,141 @@ class _VCardState extends State<VCard> {
           },
         ),
       ),
-      body: Column(
-        children: [
-        
-        ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal:25 ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 20,),
+              Text("URL",
+                style: TextStyle(
+                  fontSize: 16, // Metin boyutunu burada ayarlayabilirsiniz
+                ),
+              ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 7),
+              child: TextField(
+                  decoration: InputDecoration(
+                    hintText: "URL",
+                    hintStyle: TextStyle(color: Colors.grey),
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                      color: Colors.grey,
+                    )),
+                  ),
+                  style: TextStyle(
+                      color: Colors.black), // Yazı rengini beyaz yapar
+                ),
+            ),
+            SizedBox(height: 20,),
+              Text("Şirket",
+                style: TextStyle(
+                  fontSize: 16, // Metin boyutunu burada ayarlayabilirsiniz
+                ),
+              ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 7),
+              child: TextField(
+                  decoration: InputDecoration(
+                    hintText: "Şirket",
+                    hintStyle: TextStyle(color: Colors.grey),
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                      color: Colors.grey,
+                    )),
+                  ),
+                  style: TextStyle(
+                      color: Colors.black), // Yazı rengini beyaz yapar
+                ),
+            ),
+            SizedBox(height: 15,),
+              Text("Meslek",
+                style: TextStyle(
+                  fontSize: 16, // Metin boyutunu burada ayarlayabilirsiniz
+                ),
+              ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 7),
+              child: TextField(
+                  decoration: InputDecoration(
+                    hintText: "Meslek",
+                    hintStyle: TextStyle(color: Colors.grey),
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                      color: Colors.grey,
+                    )),
+                  ),
+                  style: TextStyle(
+                      color: Colors.black), // Yazı rengini beyaz yapar
+                ),
+            ),
+            SizedBox(height: 15,),
+              Text("Adres",
+                style: TextStyle(
+                  fontSize: 16, // Metin boyutunu burada ayarlayabilirsiniz
+                ),
+              ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 7),
+              child: TextField(
+                  decoration: InputDecoration(
+                    hintText: "Adres",
+                    hintStyle: TextStyle(color: Colors.grey),
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                      color: Colors.grey,
+                    )),
+                  ),
+                  style: TextStyle(
+                      color: Colors.black), // Yazı rengini beyaz yapar
+                ),
+            ),
+            SizedBox(height: 15,),
+              Text("Telefon Numarası",
+                style: TextStyle(
+                  fontSize: 16, // Metin boyutunu burada ayarlayabilirsiniz
+                ),
+              ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 7),
+              child: TextField(
+                  decoration: InputDecoration(
+                    hintText: "Telefon Numarası",
+                    hintStyle: TextStyle(color: Colors.grey),
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                      color: Colors.grey,
+                    )),
+                  ),
+                  style: TextStyle(
+                      color: Colors.black), // Yazı rengini beyaz yapar
+                ),
+            ),
+            SizedBox(height: 15,),
+              Text("E-Mail",
+                style: TextStyle(
+                  fontSize: 16, // Metin boyutunu burada ayarlayabilirsiniz
+                ),
+              ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 7),
+              child: TextField(
+                  decoration: InputDecoration(
+                    hintText: "E-Mail",
+                    hintStyle: TextStyle(color: Colors.grey),
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                      color: Colors.grey,
+                    )),
+                  ),
+                  style: TextStyle(
+                      color: Colors.black), // Yazı rengini beyaz yapar
+                ),
+            ),
+            ],
+          ),
+        ),
       ),
       bottomNavigationBar: Container(
         // Reklamı içeren alt bar
@@ -618,10 +775,57 @@ bool _isAdLoaded = false;
           },
         ),
       ),
-      body: Column(
-        children: [
-        
-        ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal:25 ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 20,),
+              Text("Enlem",
+                style: TextStyle(
+                  fontSize: 16, // Metin boyutunu burada ayarlayabilirsiniz
+                ),
+              ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 7),
+              child: TextField(
+                  decoration: InputDecoration(
+                    hintText: "Enlem",
+                    hintStyle: TextStyle(color: Colors.grey),
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                      color: Colors.grey,
+                    )),
+                  ),
+                  style: TextStyle(
+                      color: Colors.black), // Yazı rengini beyaz yapar
+                ),
+            ),
+            SizedBox(height: 20,),
+              Text("Boylam",
+                style: TextStyle(
+                  fontSize: 16, // Metin boyutunu burada ayarlayabilirsiniz
+                ),
+              ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 7),
+              child: TextField(
+                  decoration: InputDecoration(
+                    hintText: "Boylam",
+                    hintStyle: TextStyle(color: Colors.grey),
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                      color: Colors.grey,
+                    )),
+                  ),
+                  style: TextStyle(
+                      color: Colors.black), // Yazı rengini beyaz yapar
+                ),
+            ),
+            ],
+          ),
+        ),
       ),
       bottomNavigationBar: Container(
         // Reklamı içeren alt bar
@@ -708,10 +912,57 @@ bool _isAdLoaded = false;
           },
         ),
       ),
-      body: Column(
-        children: [
-        
-        ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal:25 ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 20,),
+              Text("SSID",
+                style: TextStyle(
+                  fontSize: 16, // Metin boyutunu burada ayarlayabilirsiniz
+                ),
+              ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 7),
+              child: TextField(
+                  decoration: InputDecoration(
+                    hintText: "SSID",
+                    hintStyle: TextStyle(color: Colors.grey),
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                      color: Colors.grey,
+                    )),
+                  ),
+                  style: TextStyle(
+                      color: Colors.black), // Yazı rengini beyaz yapar
+                ),
+            ),
+            SizedBox(height: 20,),
+              Text("Şifre",
+                style: TextStyle(
+                  fontSize: 16, // Metin boyutunu burada ayarlayabilirsiniz
+                ),
+              ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 7),
+              child: TextField(
+                  decoration: InputDecoration(
+                    hintText: "Şifre",
+                    hintStyle: TextStyle(color: Colors.grey),
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                      color: Colors.grey,
+                    )),
+                  ),
+                  style: TextStyle(
+                      color: Colors.black), // Yazı rengini beyaz yapar
+                ),
+            ),
+            ],
+          ),
+        ),
       ),
       bottomNavigationBar: Container(
         // Reklamı içeren alt bar
@@ -798,10 +1049,78 @@ bool _isAdLoaded = false;
           },
         ),
       ),
-      body: Column(
-        children: [
-        
-        ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal:25 ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 20,),
+              Text("E-posta",
+                style: TextStyle(
+                  fontSize: 16, // Metin boyutunu burada ayarlayabilirsiniz
+                ),
+              ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 7),
+              child: TextField(
+                  decoration: InputDecoration(
+                    hintText: "E-posta",
+                    hintStyle: TextStyle(color: Colors.grey),
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                      color: Colors.grey,
+                    )),
+                  ),
+                  style: TextStyle(
+                      color: Colors.black), // Yazı rengini beyaz yapar
+                ),
+            ),
+            SizedBox(height: 20,),
+              Text("Konu",
+                style: TextStyle(
+                  fontSize: 16, // Metin boyutunu burada ayarlayabilirsiniz
+                ),
+              ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 7),
+              child: TextField(
+                  decoration: InputDecoration(
+                    hintText: "Konu",
+                    hintStyle: TextStyle(color: Colors.grey),
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                      color: Colors.grey,
+                    )),
+                  ),
+                  style: TextStyle(
+                      color: Colors.black), // Yazı rengini beyaz yapar
+                ),
+            ),
+            SizedBox(height: 20,),
+              Text("Mesaj",
+                style: TextStyle(
+                  fontSize: 16, // Metin boyutunu burada ayarlayabilirsiniz
+                ),
+              ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 7),
+              child: TextField(
+                  decoration: InputDecoration(
+                    hintText: "Mesaj",
+                    hintStyle: TextStyle(color: Colors.grey),
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                      color: Colors.grey,
+                    )),
+                  ),
+                  style: TextStyle(
+                      color: Colors.black), // Yazı rengini beyaz yapar
+                ),
+            ),
+            ],
+          ),
+        ),
       ),
       bottomNavigationBar: Container(
         // Reklamı içeren alt bar
@@ -888,10 +1207,57 @@ bool _isAdLoaded = false;
           },
         ),
       ),
-      body: Column(
-        children: [
-        
-        ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal:25 ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 20,),
+              Text("Tel No",
+                style: TextStyle(
+                  fontSize: 16, // Metin boyutunu burada ayarlayabilirsiniz
+                ),
+              ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 7),
+              child: TextField(
+                  decoration: InputDecoration(
+                    hintText: "Tel No",
+                    hintStyle: TextStyle(color: Colors.grey),
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                      color: Colors.grey,
+                    )),
+                  ),
+                  style: TextStyle(
+                      color: Colors.black), // Yazı rengini beyaz yapar
+                ),
+            ),
+            SizedBox(height: 20,),
+              Text("Mesaj",
+                style: TextStyle(
+                  fontSize: 16, // Metin boyutunu burada ayarlayabilirsiniz
+                ),
+              ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 7),
+              child: TextField(
+                  decoration: InputDecoration(
+                    hintText: "Mesaj",
+                    hintStyle: TextStyle(color: Colors.grey),
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                      color: Colors.grey,
+                    )),
+                  ),
+                  style: TextStyle(
+                      color: Colors.black), // Yazı rengini beyaz yapar
+                ),
+            ),
+            ],
+          ),
+        ),
       ),
       bottomNavigationBar: Container(
         // Reklamı içeren alt bar
@@ -978,10 +1344,120 @@ bool _isAdLoaded = false;
           },
         ),
       ),
-      body: Column(
-        children: [
-        
-        ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal:25 ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 20,),
+              Text("Etkinlik Adı",
+                style: TextStyle(
+                  fontSize: 16, // Metin boyutunu burada ayarlayabilirsiniz
+                ),
+              ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 7),
+              child: TextField(
+                  decoration: InputDecoration(
+                    hintText: "Etkinlik Adı",
+                    hintStyle: TextStyle(color: Colors.grey),
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                      color: Colors.grey,
+                    )),
+                  ),
+                  style: TextStyle(
+                      color: Colors.black), // Yazı rengini beyaz yapar
+                ),
+            ),
+            SizedBox(height: 20,),
+              Text("Konum İsmi",
+                style: TextStyle(
+                  fontSize: 16, // Metin boyutunu burada ayarlayabilirsiniz
+                ),
+              ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 7),
+              child: TextField(
+                  decoration: InputDecoration(
+                    hintText: "Konum İsmi",
+                    hintStyle: TextStyle(color: Colors.grey),
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                      color: Colors.grey,
+                    )),
+                  ),
+                  style: TextStyle(
+                      color: Colors.black), // Yazı rengini beyaz yapar
+                ),
+            ),
+            SizedBox(height: 20,),
+              Text("Başlangıç Tarihi",
+                style: TextStyle(
+                  fontSize: 16, // Metin boyutunu burada ayarlayabilirsiniz
+                ),
+              ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 7),
+              child: TextField(
+                  decoration: InputDecoration(
+                    hintText: "Başlangıç Tarihi",
+                    hintStyle: TextStyle(color: Colors.grey),
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                      color: Colors.grey,
+                    )),
+                  ),
+                  style: TextStyle(
+                      color: Colors.black), // Yazı rengini beyaz yapar
+                ),
+            ),
+            SizedBox(height: 20,),
+              Text("Bitiş Tarihi",
+                style: TextStyle(
+                  fontSize: 16, // Metin boyutunu burada ayarlayabilirsiniz
+                ),
+              ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 7),
+              child: TextField(
+                  decoration: InputDecoration(
+                    hintText: "Bitiş Tarihi",
+                    hintStyle: TextStyle(color: Colors.grey),
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                      color: Colors.grey,
+                    )),
+                  ),
+                  style: TextStyle(
+                      color: Colors.black), // Yazı rengini beyaz yapar
+                ),
+            ),
+            SizedBox(height: 20,),
+              Text("Açıklama",
+                style: TextStyle(
+                  fontSize: 16, // Metin boyutunu burada ayarlayabilirsiniz
+                ),
+              ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 7),
+              child: TextField(
+                  decoration: InputDecoration(
+                    hintText: "Açıklama",
+                    hintStyle: TextStyle(color: Colors.grey),
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                      color: Colors.grey,
+                    )),
+                  ),
+                  style: TextStyle(
+                      color: Colors.black), // Yazı rengini beyaz yapar
+                ),
+            ),
+            ],
+          ),
+        ),
       ),
       bottomNavigationBar: Container(
         // Reklamı içeren alt bar
@@ -1068,10 +1544,36 @@ bool _isAdLoaded = false;
           },
         ),
       ),
-      body: Column(
-        children: [
-        
-        ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal:25 ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 20,),
+              Text("Metin",
+                style: TextStyle(
+                  fontSize: 16, // Metin boyutunu burada ayarlayabilirsiniz
+                ),
+              ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 7),
+              child: TextField(
+                  decoration: InputDecoration(
+                    hintText: "Metin",
+                    hintStyle: TextStyle(color: Colors.grey),
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                      color: Colors.grey,
+                    )),
+                  ),
+                  style: TextStyle(
+                      color: Colors.black), // Yazı rengini beyaz yapar
+                ),
+            ),
+            ],
+          ),
+        ),
       ),
       bottomNavigationBar: Container(
         // Reklamı içeren alt bar
@@ -1122,7 +1624,3 @@ bool _isAdLoaded = false;
     _loadAd();
   }
 }
-
-
-
- 
