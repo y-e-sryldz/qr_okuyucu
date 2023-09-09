@@ -39,12 +39,11 @@ class _sonuc_ekraniState extends State<sonuc_ekrani> {
     ;
     return Scaffold(
       appBar: AppBar(
-        title: Center(
-          child: Text(
-            "Yellow Star",
-            style: TextStyle(
-              color: Colors.white, // Yazı rengini beyaz olarak ayarlayın
-            ),
+        centerTitle: true, // Başlık metnini tam ortada hizalamak için
+        title: Text(
+          "Yellow Star",
+          style: TextStyle(
+            color: Colors.white, // Yazı rengini beyaz olarak ayarlayın
           ),
         ),
         leading: IconButton(

@@ -1,9 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 import 'package:qr_okuyucu/main.dart';
+import 'package:http/http.dart' as http;
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 
 //banner reklam
 final String _adUnitId = Platform.isAndroid
@@ -468,12 +471,11 @@ class _URLState extends State<URL> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(
-          child: Text(
-            "Yellow Star",
-            style: TextStyle(
-              color: Colors.white, // Yazı rengini beyaz olarak ayarlayın
-            ),
+        centerTitle: true, // Başlık metnini tam ortada hizalamak için
+        title: Text(
+          "Yellow Star",
+          style: TextStyle(
+            color: Colors.white, // Yazı rengini beyaz olarak ayarlayın
           ),
         ),
         leading: IconButton(
@@ -590,12 +592,11 @@ class _VCardState extends State<VCard> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(
-          child: Text(
-            "Yellow Star",
-            style: TextStyle(
-              color: Colors.white, // Yazı rengini beyaz olarak ayarlayın
-            ),
+        centerTitle: true, // Başlık metnini tam ortada hizalamak için
+        title: Text(
+          "Yellow Star",
+          style: TextStyle(
+            color: Colors.white, // Yazı rengini beyaz olarak ayarlayın
           ),
         ),
         leading: IconButton(
@@ -832,12 +833,11 @@ class _KonumState extends State<Konum> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(
-          child: Text(
-            "Yellow Star",
-            style: TextStyle(
-              color: Colors.white, // Yazı rengini beyaz olarak ayarlayın
-            ),
+        centerTitle: true, // Başlık metnini tam ortada hizalamak için
+        title: Text(
+          "Yellow Star",
+          style: TextStyle(
+            color: Colors.white, // Yazı rengini beyaz olarak ayarlayın
           ),
         ),
         leading: IconButton(
@@ -978,12 +978,11 @@ class _Wi_FiState extends State<Wi_Fi> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(
-          child: Text(
-            "Yellow Star",
-            style: TextStyle(
-              color: Colors.white, // Yazı rengini beyaz olarak ayarlayın
-            ),
+        centerTitle: true, // Başlık metnini tam ortada hizalamak için
+        title: Text(
+          "Yellow Star",
+          style: TextStyle(
+            color: Colors.white, // Yazı rengini beyaz olarak ayarlayın
           ),
         ),
         leading: IconButton(
@@ -1124,12 +1123,11 @@ class _E_MailState extends State<E_Mail> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(
-          child: Text(
-            "Yellow Star",
-            style: TextStyle(
-              color: Colors.white, // Yazı rengini beyaz olarak ayarlayın
-            ),
+        centerTitle: true, // Başlık metnini tam ortada hizalamak için
+        title: Text(
+          "Yellow Star",
+          style: TextStyle(
+            color: Colors.white, // Yazı rengini beyaz olarak ayarlayın
           ),
         ),
         leading: IconButton(
@@ -1294,12 +1292,11 @@ class _SMSState extends State<SMS> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(
-          child: Text(
-            "Yellow Star",
-            style: TextStyle(
-              color: Colors.white, // Yazı rengini beyaz olarak ayarlayın
-            ),
+        centerTitle: true, // Başlık metnini tam ortada hizalamak için
+        title: Text(
+          "Yellow Star",
+          style: TextStyle(
+            color: Colors.white, // Yazı rengini beyaz olarak ayarlayın
           ),
         ),
         leading: IconButton(
@@ -1434,18 +1431,45 @@ class Etkinlik extends StatefulWidget {
 }
 
 class _EtkinlikState extends State<Etkinlik> {
+  DateTime? _selectedDate1;
+  DateTime? _selectedDate2;
+  Future<void> _selectDate1(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+    if (picked != null && picked != _selectedDate1)
+      setState(() {
+        _selectedDate1 = picked;
+      });
+  }
+
+  Future<void> _selectDate2(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+    if (picked != null && picked != _selectedDate2)
+      setState(() {
+        _selectedDate2 = picked;
+      });
+  }
+
   BannerAd? _bannerAd;
   bool _isAdLoaded = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(
-          child: Text(
-            "Yellow Star",
-            style: TextStyle(
-              color: Colors.white, // Yazı rengini beyaz olarak ayarlayın
-            ),
+        centerTitle: true, // Başlık metnini tam ortada hizalamak için
+        title: Text(
+          "Yellow Star",
+          style: TextStyle(
+            color: Colors.white, // Yazı rengini beyaz olarak ayarlayın
           ),
         ),
         leading: IconButton(
@@ -1519,54 +1543,6 @@ class _EtkinlikState extends State<Etkinlik> {
                 height: 20,
               ),
               Text(
-                "Başlangıç Tarihi",
-                style: TextStyle(
-                  fontSize: 16, // Metin boyutunu burada ayarlayabilirsiniz
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 7),
-                child: TextField(
-                  decoration: InputDecoration(
-                    hintText: "Başlangıç Tarihi",
-                    hintStyle: TextStyle(color: Colors.grey),
-                    enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                      color: Colors.grey,
-                    )),
-                  ),
-                  style: TextStyle(
-                      color: Colors.black), // Yazı rengini beyaz yapar
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Text(
-                "Bitiş Tarihi",
-                style: TextStyle(
-                  fontSize: 16, // Metin boyutunu burada ayarlayabilirsiniz
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 7),
-                child: TextField(
-                  decoration: InputDecoration(
-                    hintText: "Bitiş Tarihi",
-                    hintStyle: TextStyle(color: Colors.grey),
-                    enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                      color: Colors.grey,
-                    )),
-                  ),
-                  style: TextStyle(
-                      color: Colors.black), // Yazı rengini beyaz yapar
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Text(
                 "Açıklama",
                 style: TextStyle(
                   fontSize: 16, // Metin boyutunu burada ayarlayabilirsiniz
@@ -1586,6 +1562,65 @@ class _EtkinlikState extends State<Etkinlik> {
                   style: TextStyle(
                       color: Colors.black), // Yazı rengini beyaz yapar
                 ),
+              ),
+              SizedBox(
+                height: 40,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Text(
+                          "Başlangıç Tarihi",
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () => _selectDate1(context),
+                          style: TextButton.styleFrom(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 20),
+                          ),
+                          child: Text(
+                            _selectedDate1 != null
+                                ? 'Seçilen Tarih:    ${DateFormat('dd MMM y', 'tr_TR').format(_selectedDate1!)}'
+                                : 'Tarih Seç',
+                            style:
+                                TextStyle(fontSize: 16, color: Colors.blueGrey),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Text(
+                          "Bitiş Tarihi",
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () => _selectDate2(context),
+                          style: TextButton.styleFrom(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 20),
+                          ),
+                          child: Text(
+                            _selectedDate2 != null
+                                ? 'Seçilen Tarih:    ${DateFormat('dd MMM y', 'tr_TR').format(_selectedDate2!)}'
+                                : 'Tarih Seç',
+                            style:
+                                TextStyle(fontSize: 16, color: Colors.blueGrey),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -1640,6 +1675,7 @@ class _EtkinlikState extends State<Etkinlik> {
   @override
   void initState() {
     super.initState();
+    initializeDateFormatting('tr_TR', null);
     _loadAd();
   }
 }
@@ -1661,7 +1697,9 @@ class _MetinState extends State<Metin> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('QR Kod Görüntüle'),
+          title: Text(
+            'QR Kod Görüntüle',
+          ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -1676,6 +1714,7 @@ class _MetinState extends State<Metin> {
                     onPressed: () {
                       // QR kodu indirmek için bir işlev ekleyin (örneğin, galeriye kaydetmek için)
                       _downloadQRCode();
+                      Navigator.of(context).pop(); // Dialog'u kapat
                     },
                     child: Text('İndir'),
                   ),
@@ -1701,16 +1740,36 @@ class _MetinState extends State<Metin> {
     final bytes = response.bodyBytes;
 
     final appDir = await getApplicationDocumentsDirectory();
-    final qrPath = '${appDir.path}/qr_code.png';
+    final qrPath = appDir.path;
+    int fileIndex = 1;
 
-    File(qrPath).writeAsBytesSync(bytes);
+    // Aynı ada sahip dosya zaten varsa, bir sonraki sıraya geçin
+    while (await File('$qrPath/qr_code_$fileIndex.png').exists()) {
+      fileIndex++;
+    }
 
-    // QR kodu kaydedildiğini kullanıcıya bildirin
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('QR kodu indirildi: $qrPath'),
-      ),
-    );
+    final finalQrPath = '$qrPath/qr_code_$fileIndex.png';
+
+    File(finalQrPath).writeAsBytesSync(bytes);
+
+    // Dosyayı galeriye ekleyin
+    final result = await ImageGallerySaver.saveFile(finalQrPath);
+
+    if (result != null && result.isNotEmpty) {
+      // Başarıyla kaydedildiğini bildirin
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('QR kodu galeriye kaydedildi.'),
+        ),
+      );
+    } else {
+      // Hata durumunda bildirin
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('QR kodu galeriye kaydedilemedi.'),
+        ),
+      );
+    }
   }
 
   BannerAd? _bannerAd;
@@ -1719,12 +1778,11 @@ class _MetinState extends State<Metin> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(
-          child: Text(
-            "Yellow Star",
-            style: TextStyle(
-              color: Colors.white, // Yazı rengini beyaz olarak ayarlayın
-            ),
+        centerTitle: true, // Başlık metnini tam ortada hizalamak için
+        title: Text(
+          "Yellow Star",
+          style: TextStyle(
+            color: Colors.white, // Yazı rengini beyaz olarak ayarlayın
           ),
         ),
         leading: IconButton(
