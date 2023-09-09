@@ -300,6 +300,7 @@ class _sonuc_ekraniState extends State<sonuc_ekrani> {
                 ],
               ),
             ),
+          //metin
           if (sira == 8)
             Expanded(
               child: Stack(

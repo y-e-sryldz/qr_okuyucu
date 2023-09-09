@@ -42,6 +42,8 @@ dependencies:
   flutter_barcode_scanner: ^2.0.0
   url_launcher: ^6.1.14
   intl: ^0.18.1
+  sqlite3: ^2.1.0
+  sqflite: ^2.3.0
 
 dev_dependencies:
   flutter_test:
@@ -62,7 +64,7 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: "resimler/icon.png"
+  image_path: "resimler/qr-code.png"
 
 # The following section is specific to Flutter packages.
 flutter:
@@ -73,8 +75,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - resimler/icon.png
-  #   - images/a_dot_ham.jpeg
+    - resimler/qr-code.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

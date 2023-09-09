@@ -3,7 +3,7 @@
 <uses-permission android:name="android.permission.CAMERA" />
 
     <application
-        android:label="qr-barkod okuyucu"
+        android:label="Mobil QR"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

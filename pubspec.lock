@@ -153,6 +153,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.1"
+  ffi:
+    dependency: transitive
+    description:
+      name: ffi
+      sha256: "7bf0adc28a23d395f19f3f1eb21dd7cfd1dd9f8e1c50051c069122e6853bc878"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.0"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -333,6 +341,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.10.0"
+  sqflite:
+    dependency: "direct main"
+    description:
+      name: sqflite
+      sha256: "591f1602816e9c31377d5f008c2d9ef7b8aca8941c3f89cc5fd9d84da0c38a9a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.0"
+  sqflite_common:
+    dependency: transitive
+    description:
+      name: sqflite_common
+      sha256: "1b92f368f44b0dee2425bb861cfa17b6f6cf3961f762ff6f941d20b33355660a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.5.0"
+  sqlite3:
+    dependency: "direct main"
+    description:
+      name: sqlite3
+      sha256: db65233e6b99e99b2548932f55a987961bc06d82a31a0665451fa0b4fff4c3fb
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.0"
   stack_trace:
     dependency: transitive
     description:
@@ -365,6 +397,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  synchronized:
+    dependency: transitive
+    description:
+      name: synchronized
+      sha256: "5fcbd27688af6082f5abd611af56ee575342c30e87541d0245f7ff99faa02c60"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.0"
   term_glyph:
     dependency: transitive
     description:
@@ -489,18 +529,18 @@ packages:
     dependency: transitive
     description:
       name: webview_flutter_android
-      sha256: "0d8f5ac96a155e672129bf94c7abf625de01241d44d269dbaff083f1b4deb1aa"
+      sha256: "9427774649fd3c8b7ff53523051395d13aed2ca355822b822e6493d79f5fc05a"
       url: "https://pub.dev"
     source: hosted
-    version: "3.9.5"
+    version: "3.10.0"
   webview_flutter_platform_interface:
     dependency: transitive
     description:
       name: webview_flutter_platform_interface
-      sha256: "9d32a63a5ee111b37482cb3eac3379b9f0992afd27a52ee30279dbf06f41918b"
+      sha256: "6d9213c65f1060116757a7c473247c60f3f7f332cac33dc417c9e362a9a13e4f"
       url: "https://pub.dev"
     source: hosted
-    version: "2.5.1"
+    version: "2.6.0"
   webview_flutter_wkwebview:
     dependency: transitive
     description:

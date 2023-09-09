@@ -1,9 +1,9 @@
 import 'dart:io';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-import 'package:qr_okuyucu/sonuc_ekran%C4%B1.dart';
+import 'package:qr_okuyucu/qr_sonuc_ekran%C4%B1.dart';
+import 'qr_olustur.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -56,9 +56,11 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
-  bool _showQRView = false; // QRView'ı göstermek için kullanılacak değişken
+  bool Tara = false; // QRView'ı göstermek için kullanılacak değişken
+  bool Gecmis = true; //Gecmis'ı göstermek için kullanılacak değişken
+  bool olustur = false; // olustur'ı göstermek için kullanılacak değişken
   String qrCodeContent = "";
-  
+
   bool _isAdLoaded = false;
 
   InterstitialAd? _interstitialAd;
@@ -66,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final String _adUnitId1 = Platform.isAndroid
       ? 'ca-app-pub-3940256099942544/6300978111'
       : 'ca-app-pub-3940256099942544/2934735716';
-    final String _adUnitId = Platform.isAndroid
+  final String _adUnitId = Platform.isAndroid
       ? 'ca-app-pub-3940256099942544/1033173712'
       : 'ca-app-pub-3940256099942544/4411468910';
 
@@ -74,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     _loadAd1(); // Banner reklamı yükleme işlemi
-    _loadAd(context);
+    _loadAd(context); // Arka planda interstitial reklamı yükleme işlemi
   }
 
   int _selectedIndex = 1; // İlk seçili sayfa
@@ -85,19 +87,26 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _selectedIndex = index;
       if (index == 0) {
-        _showQRView = true; // Kamera ikonuna tıklandığında QRView'ı göster
-      } else {
-        _showQRView = false; // Diğer sekmelere tıklanınca QRView'ı kapat
+        Tara = true;
+        Gecmis = false;
+        olustur = false;
+      } else if (index == 1) {
+        Tara = false;
+        Gecmis = true;
+        olustur = false;
+      } else if (index == 2) {
+        Tara = false;
+        Gecmis = false;
+        olustur = true;
       }
     });
   }
 
   void _onQRViewCreated(QRViewController controller) {
-
-    controller.scannedDataStream.listen((scanData) {
+    controller.scannedDataStream.listen((scanData) async {
       qrCodeContent = scanData.code!;
       // QR kod içeriğini inceleme ve veri türünü kontrol etme
-      //url
+      // url
       if (qrCodeContent.startsWith("https://")) {
         controller.pauseCamera();
         _interstitialAd?.show();
@@ -170,7 +179,6 @@ class _MyHomePageState extends State<MyHomePage> {
           MaterialPageRoute(
               builder: (context) => sonuc_ekrani(7, scanData.code!)),
         );
-
       } else {
         controller.pauseCamera();
         _interstitialAd?.show();
@@ -212,7 +220,7 @@ class _MyHomePageState extends State<MyHomePage> {
             unselectedItemColor: Colors.white.withOpacity(0.6),
             onTap: _onItemTapped,
           ),
-          if (_showQRView) // QR görüntülemesi açıksa QRView widget'ını göster
+          if (Tara) // QR görüntülemesi açıksa QRView widget'ını göster
             Expanded(
               flex: 8,
               child: Stack(
@@ -230,6 +238,17 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
               ),
             ),
+          if (Gecmis) // QR görüntülemesi açıksa QRView widget'ını göster
+            Expanded(
+              flex: 8,
+              child: Stack(
+                children: [
+                  Text("Geçmiş yapılcak diye kalsın"),
+                ],
+              ),
+            ),
+          if (olustur) // QR görüntülemesi açıksa QRView widget'ını göster
+            qr_olustur(context)
         ],
       ),
       bottomNavigationBar: Container(
@@ -271,7 +290,8 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     ).load();
   }
-    void _loadAd(BuildContext context) async {
+
+  void _loadAd(BuildContext context) async {
     InterstitialAd.load(
         adUnitId: _adUnitId,
         request: const AdRequest(),
@@ -302,7 +322,6 @@ class _MyHomePageState extends State<MyHomePage> {
     super.dispose();
   }
 }
-
 
 class QRFramePainter extends CustomPainter {
   @override
