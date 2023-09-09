@@ -44,6 +44,9 @@ dependencies:
   intl: ^0.18.1
   sqlite3: ^2.1.0
   sqflite: ^2.3.0
+  qr_flutter: ^4.1.0
+  path_provider: ^2.1.1
+  http: ^1.1.0
 
 dev_dependencies:
   flutter_test:
