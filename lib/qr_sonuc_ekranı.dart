@@ -280,7 +280,7 @@ class _sonuc_ekraniState extends State<sonuc_ekrani> {
                         final keyIndex = index ~/ 2;
                         final key = eventInfo.keys.elementAt(keyIndex);
                         String value = eventInfo[key]!;
-                          value = formatDateTime(value); // Tarihi biçimlendir
+                        value = formatDateTime(value); // Tarihi biçimlendir
                         return ListTile(
                           title: Text(key),
                           subtitle: Text(value),
@@ -377,19 +377,19 @@ class _sonuc_ekraniState extends State<sonuc_ekrani> {
     super.dispose();
   }
 
-String formatDateTime(String dateTimeStr) {
-  try {
-    print("Önce: $dateTimeStr"); // Kontrol noktası ekleyin
-    DateTime dateTime = DateTime.parse(dateTimeStr);
-    String formattedDate =
-        DateFormat('dd/MM/yyyy').format(dateTime); // Gün/Ay/Yıl formatı
-    print("Sonra: $formattedDate"); // Kontrol noktası ekleyin
-    return formattedDate;
-  } catch (e) {
-    print("Tarih biçimlendirme hatası: $e");
-    return dateTimeStr; // Hata durumunda orijinal değeri döndür
+  String formatDateTime(String dateTimeStr) {
+    try {
+      print("Önce: $dateTimeStr"); // Kontrol noktası ekleyin
+      DateTime dateTime = DateTime.parse(dateTimeStr);
+      String formattedDate =
+          DateFormat('dd/MM/yyyy').format(dateTime); // Gün/Ay/Yıl formatı
+      print("Sonra: $formattedDate"); // Kontrol noktası ekleyin
+      return formattedDate;
+    } catch (e) {
+      print("Tarih biçimlendirme hatası: $e");
+      return dateTimeStr; // Hata durumunda orijinal değeri döndür
+    }
   }
-}
 
   Map<String, String> parseVCard(String vCardData) {
     Map<String, String> vCardInfo = {};

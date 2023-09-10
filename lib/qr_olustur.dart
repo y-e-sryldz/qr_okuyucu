@@ -465,8 +465,93 @@ class URL extends StatefulWidget {
 }
 
 class _URLState extends State<URL> {
+  String _inputText = '';
   BannerAd? _bannerAd;
   bool _isAdLoaded = false;
+
+  void _showQRDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            'QR Kod Görüntüle',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image.network(
+                'https://api.qrserver.com/v1/create-qr-code/?data=$_inputText&size=200x200',
+              ),
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      // QR kodu indirmek için bir işlev ekleyin (örneğin, galeriye kaydetmek için)
+                      _downloadQRCode();
+                      Navigator.of(context).pop(); // Dialog'u kapat
+                    },
+                    child: Text('İndir'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(); // Dialog'u kapat
+                    },
+                    child: Text('Kapat'),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _downloadQRCode() async {
+    final url =
+        'https://api.qrserver.com/v1/create-qr-code/?data=$_inputText&size=200x200';
+    final response = await http.get(Uri.parse(url));
+    final bytes = response.bodyBytes;
+
+    final appDir = await getApplicationDocumentsDirectory();
+    final qrPath = appDir.path;
+    int fileIndex = 1;
+
+    // Aynı ada sahip dosya zaten varsa, bir sonraki sıraya geçin
+    while (await File('$qrPath/qr_code_$fileIndex.png').exists()) {
+      fileIndex++;
+    }
+
+    final finalQrPath = '$qrPath/qr_code_$fileIndex.png';
+
+    File(finalQrPath).writeAsBytesSync(bytes);
+
+    // Dosyayı galeriye ekleyin
+    final result = await ImageGallerySaver.saveFile(finalQrPath);
+
+    if (result != null && result.isNotEmpty) {
+      // Başarıyla kaydedildiğini bildirin
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('QR kodu galeriye kaydedildi.'),
+        ),
+      );
+    } else {
+      // Hata durumunda bildirin
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('QR kodu galeriye kaydedilemedi.'),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -519,8 +604,41 @@ class _URLState extends State<URL> {
                   ),
                   style: TextStyle(
                       color: Colors.black), // Yazı rengini beyaz yapar
+                  onChanged: (value) {
+                    setState(() {
+                      _inputText = value;
+                    });
+                  },
                 ),
               ),
+              SizedBox(
+                height: 20,
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  if (_inputText.isNotEmpty) {
+                    if (isURL(_inputText)) {
+                      // Metin bir URL ise QR kodu görüntüleme dialogunu göster
+                      _showQRDialog();
+                    } else {
+                      // Metin bir URL değilse hata mesajı göster
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Geçerli bir URL değil.'),
+                        ),
+                      );
+                    }
+                  } else {
+                    // Metin içeriği boşsa hata mesajı göster
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Metin içeriği boş olamaz.'),
+                      ),
+                    );
+                  }
+                },
+                child: Text('QR Kod Oluştur ve Görüntüle'),
+              )
             ],
           ),
         ),
@@ -543,6 +661,15 @@ class _URLState extends State<URL> {
         ),
       ),
     );
+  }
+
+  bool isURL(String text) {
+    // URL'nin geçerli bir URL formatına sahip olup olmadığını doğrulama
+    Uri? uri = Uri.tryParse(text);
+    if (uri != null && uri.hasScheme && uri.hasAuthority) {
+      return true;
+    }
+    return false;
   }
 
   void _loadAd() async {
@@ -586,6 +713,109 @@ class VCard extends StatefulWidget {
 }
 
 class _VCardState extends State<VCard> {
+  String IsimSoyisim = '';
+  String Sirket = '';
+  String Meslek = '';
+  String Adres = '';
+  String TelNo = '';
+  String E_Mail = '';
+  String KisiBilgisi = '';
+
+  void _showQRDialog() {
+    // Her bir veriyi ayrı stringlerde saklayın
+    String fn = 'FN:$IsimSoyisim';
+    String org = 'ORG:$Sirket';
+    String title = 'TITLE:$Meslek';
+    String adr = 'ADR:$Adres';
+    String tel = 'TEL;CELL:$TelNo';
+    String email = 'EMAIL;WORK;INTERNET:$E_Mail';
+
+    // Tüm verileri birleştirin
+    KisiBilgisi =
+        'BEGIN:VCARD\n$fn\n$org\n$title\n$adr\n$tel\n$email\nEND:VCARD';
+
+    // QR kodunu oluşturun ve görüntülemek için dialog gösterin
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            'QR Kod Görüntüle',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image.network(
+                'https://api.qrserver.com/v1/create-qr-code/?data=$KisiBilgisi&size=200x200',
+              ),
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      _downloadQRCode(); // QR kodu indirmek için bir işlev ekleyin (örneğin, galeriye kaydetmek için)
+                      Navigator.of(context).pop(); // Dialog'u kapat
+                    },
+                    child: Text('İndir'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(); // Dialog'u kapat
+                    },
+                    child: Text('Kapat'),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _downloadQRCode() async {
+    final url =
+        'https://api.qrserver.com/v1/create-qr-code/?data=$KisiBilgisi&size=200x200';
+    final response = await http.get(Uri.parse(url));
+    final bytes = response.bodyBytes;
+
+    final appDir = await getApplicationDocumentsDirectory();
+    final qrPath = appDir.path;
+    int fileIndex = 1;
+
+    // Aynı ada sahip dosya zaten varsa, bir sonraki sıraya geçin
+    while (await File('$qrPath/qr_code_$fileIndex.png').exists()) {
+      fileIndex++;
+    }
+
+    final finalQrPath = '$qrPath/qr_code_$fileIndex.png';
+
+    File(finalQrPath).writeAsBytesSync(bytes);
+
+    // Dosyayı galeriye ekleyin
+    final result = await ImageGallerySaver.saveFile(finalQrPath);
+
+    if (result != null && result.isNotEmpty) {
+      // Başarıyla kaydedildiğini bildirin
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('QR kodu galeriye kaydedildi.'),
+        ),
+      );
+    } else {
+      // Hata durumunda bildirin
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('QR kodu galeriye kaydedilemedi.'),
+        ),
+      );
+    }
+  }
+
   BannerAd? _bannerAd;
   bool _isAdLoaded = false;
   @override
@@ -622,7 +852,7 @@ class _VCardState extends State<VCard> {
                 height: 20,
               ),
               Text(
-                "URL",
+                "İsim Soyisim",
                 style: TextStyle(
                   fontSize: 16, // Metin boyutunu burada ayarlayabilirsiniz
                 ),
@@ -631,7 +861,7 @@ class _VCardState extends State<VCard> {
                 padding: const EdgeInsets.symmetric(horizontal: 7),
                 child: TextField(
                   decoration: InputDecoration(
-                    hintText: "URL",
+                    hintText: "İsim Soyisim",
                     hintStyle: TextStyle(color: Colors.grey),
                     enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
@@ -640,6 +870,11 @@ class _VCardState extends State<VCard> {
                   ),
                   style: TextStyle(
                       color: Colors.black), // Yazı rengini beyaz yapar
+                  onChanged: (value) {
+                    setState(() {
+                      IsimSoyisim = value;
+                    });
+                  },
                 ),
               ),
               SizedBox(
@@ -664,6 +899,11 @@ class _VCardState extends State<VCard> {
                   ),
                   style: TextStyle(
                       color: Colors.black), // Yazı rengini beyaz yapar
+                  onChanged: (value) {
+                    setState(() {
+                      Sirket = value;
+                    });
+                  },
                 ),
               ),
               SizedBox(
@@ -688,6 +928,11 @@ class _VCardState extends State<VCard> {
                   ),
                   style: TextStyle(
                       color: Colors.black), // Yazı rengini beyaz yapar
+                  onChanged: (value) {
+                    setState(() {
+                      Meslek = value;
+                    });
+                  },
                 ),
               ),
               SizedBox(
@@ -712,6 +957,11 @@ class _VCardState extends State<VCard> {
                   ),
                   style: TextStyle(
                       color: Colors.black), // Yazı rengini beyaz yapar
+                  onChanged: (value) {
+                    setState(() {
+                      Adres = value;
+                    });
+                  },
                 ),
               ),
               SizedBox(
@@ -736,6 +986,11 @@ class _VCardState extends State<VCard> {
                   ),
                   style: TextStyle(
                       color: Colors.black), // Yazı rengini beyaz yapar
+                  onChanged: (value) {
+                    setState(() {
+                      TelNo = value;
+                    });
+                  },
                 ),
               ),
               SizedBox(
@@ -760,8 +1015,38 @@ class _VCardState extends State<VCard> {
                   ),
                   style: TextStyle(
                       color: Colors.black), // Yazı rengini beyaz yapar
+                  onChanged: (value) {
+                    setState(() {
+                      E_Mail = value;
+                    });
+                  },
                 ),
               ),
+              SizedBox(
+                height: 30,
+              ),
+              Row(
+                children: [
+                  Spacer(),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (IsimSoyisim.isNotEmpty) {
+                        // Metin içeriği doluysa QR kodu görüntüleme dialogunu göster
+                        _showQRDialog();
+                      } else {
+                        // Metin içeriği boşsa kullanıcıya bir hata mesajı göstermek için bir snackbar veya alertDialog gösterebilirsiniz.
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('İsim Soyisim alanı boş olamaz.'),
+                          ),
+                        );
+                      }
+                    },
+                    child: Text('QR Kod Oluştur ve Görüntüle'),
+                  ),
+                  Spacer(),
+                ],
+              )
             ],
           ),
         ),
@@ -827,6 +1112,96 @@ class Konum extends StatefulWidget {
 }
 
 class _KonumState extends State<Konum> {
+  double latitude = 40.7128; // Enlem (Latitude)
+  double longitude = -74.0060; // Boylam (Longitude)
+  String locationName = 'New York City'; // Konum adı
+
+  String locationQRCodeData = '';
+
+  void _showQRDialog() {
+    locationQRCodeData = 'geo:$latitude,$longitude?q=$locationName';
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            'Konum QR Kodu Görüntüle',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image.network(
+                'https://api.qrserver.com/v1/create-qr-code/?data=$locationQRCodeData&size=200x200',
+              ),
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      _downloadQRCode(); // QR kodu indirmek için bir işlev ekleyin (örneğin, galeriye kaydetmek için)
+                      Navigator.of(context).pop(); // Dialog'u kapat
+                    },
+                    child: Text('İndir'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(); // Dialog'u kapat
+                    },
+                    child: Text('Kapat'),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _downloadQRCode() async {
+    final url =
+        'https://api.qrserver.com/v1/create-qr-code/?data=$locationQRCodeData&size=200x200';
+    final response = await http.get(Uri.parse(url));
+    final bytes = response.bodyBytes;
+
+    final appDir = await getApplicationDocumentsDirectory();
+    final qrPath = appDir.path;
+    int fileIndex = 1;
+
+    // Aynı ada sahip dosya zaten varsa, bir sonraki sıraya geçin
+    while (await File('$qrPath/qr_code_$fileIndex.png').exists()) {
+      fileIndex++;
+    }
+
+    final finalQrPath = '$qrPath/qr_code_$fileIndex.png';
+
+    File(finalQrPath).writeAsBytesSync(bytes);
+
+    // Dosyayı galeriye ekleyin
+    final result = await ImageGallerySaver.saveFile(finalQrPath);
+
+    if (result != null && result.isNotEmpty) {
+      // Başarıyla kaydedildiğini bildirin
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('QR kodu galeriye kaydedildi.'),
+        ),
+      );
+    } else {
+      // Hata durumunda bildirin
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('QR kodu galeriye kaydedilemedi.'),
+        ),
+      );
+    }
+  }
+
   BannerAd? _bannerAd;
   bool _isAdLoaded = false;
   @override
@@ -863,6 +1238,35 @@ class _KonumState extends State<Konum> {
                 height: 20,
               ),
               Text(
+                "Konum Adı",
+                style: TextStyle(
+                  fontSize: 16, // Metin boyutunu burada ayarlayabilirsiniz
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 7),
+                child: TextField(
+                  decoration: InputDecoration(
+                    hintText: "Konum Adı",
+                    hintStyle: TextStyle(color: Colors.grey),
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                      color: Colors.grey,
+                    )),
+                  ),
+                  style: TextStyle(
+                      color: Colors.black), // Yazı rengini beyaz yapar
+                  onChanged: (value) {
+                    setState(() {
+                      latitude = value as double;
+                    });
+                  },
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Text(
                 "Enlem",
                 style: TextStyle(
                   fontSize: 16, // Metin boyutunu burada ayarlayabilirsiniz
@@ -881,6 +1285,11 @@ class _KonumState extends State<Konum> {
                   ),
                   style: TextStyle(
                       color: Colors.black), // Yazı rengini beyaz yapar
+                  onChanged: (value) {
+                    setState(() {
+                      latitude = value as double;
+                    });
+                  },
                 ),
               ),
               SizedBox(
@@ -905,8 +1314,28 @@ class _KonumState extends State<Konum> {
                   ),
                   style: TextStyle(
                       color: Colors.black), // Yazı rengini beyaz yapar
+                  onChanged: (value) {
+                    setState(() {
+                      longitude = value as double;
+                    });
+                  },
                 ),
               ),
+              SizedBox(
+                height: 30,
+              ),
+              Row(
+                children: [
+                  Spacer(),
+                  ElevatedButton(
+                    onPressed: () {
+                      _showQRDialog();
+                    },
+                    child: Text('QR Kod Oluştur ve Görüntüle'),
+                  ),
+                  Spacer(),
+                ],
+              )
             ],
           ),
         ),
@@ -972,6 +1401,96 @@ class Wi_Fi extends StatefulWidget {
 }
 
 class _Wi_FiState extends State<Wi_Fi> {
+  String wifiSSID = 'MyWiFiNetwork'; // Wi-Fi ağı adı
+  String wifiPassword = 'MyWiFiPassword'; // Wi-Fi şifresi
+  String wifiEncryptionType =
+      'WPA'; // Wi-Fi şifreleme türü (WEP, WPA, WPA2,   vb.)
+  String wifiQRCodeData = '';
+
+  void _showQRDialog() {
+    wifiQRCodeData = 'WIFI:S:$wifiSSID;T:$wifiEncryptionType;P:$wifiPassword;;';
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            'Wi-Fi QR Kodu Görüntüle',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image.network(
+                'https://api.qrserver.com/v1/create-qr-code/?data=$wifiQRCodeData&size=200x200',
+              ),
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      _downloadQRCode(); // QR kodu indirmek için bir işlev ekleyin (örneğin, galeriye kaydetmek için)
+                      Navigator.of(context).pop(); // Dialog'u kapat
+                    },
+                    child: Text('İndir'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(); // Dialog'u kapat
+                    },
+                    child: Text('Kapat'),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _downloadQRCode() async {
+    final url =
+        'https://api.qrserver.com/v1/create-qr-code/?data=$wifiQRCodeData&size=200x200';
+    final response = await http.get(Uri.parse(url));
+    final bytes = response.bodyBytes;
+
+    final appDir = await getApplicationDocumentsDirectory();
+    final qrPath = appDir.path;
+    int fileIndex = 1;
+
+    // Aynı ada sahip dosya zaten varsa, bir sonraki sıraya geçin
+    while (await File('$qrPath/qr_code_$fileIndex.png').exists()) {
+      fileIndex++;
+    }
+
+    final finalQrPath = '$qrPath/qr_code_$fileIndex.png';
+
+    File(finalQrPath).writeAsBytesSync(bytes);
+
+    // Dosyayı galeriye ekleyin
+    final result = await ImageGallerySaver.saveFile(finalQrPath);
+
+    if (result != null && result.isNotEmpty) {
+      // Başarıyla kaydedildiğini bildirin
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('QR kodu galeriye kaydedildi.'),
+        ),
+      );
+    } else {
+      // Hata durumunda bildirin
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('QR kodu galeriye kaydedilemedi.'),
+        ),
+      );
+    }
+  }
+
   BannerAd? _bannerAd;
   bool _isAdLoaded = false;
   @override
@@ -1026,6 +1545,40 @@ class _Wi_FiState extends State<Wi_Fi> {
                   ),
                   style: TextStyle(
                       color: Colors.black), // Yazı rengini beyaz yapar
+                  onChanged: (value) {
+                    setState(() {
+                      wifiSSID = value;
+                    });
+                  },
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                "Şifreleme Türü",
+                style: TextStyle(
+                  fontSize: 16, // Metin boyutunu burada ayarlayabilirsiniz
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 7),
+                child: TextField(
+                  decoration: InputDecoration(
+                    hintText: "Şifreleme Türü (WEP, WPA, WPA2, vb.)",
+                    hintStyle: TextStyle(color: Colors.grey),
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                      color: Colors.grey,
+                    )),
+                  ),
+                  style: TextStyle(
+                      color: Colors.black), // Yazı rengini beyaz yapar
+                  onChanged: (value) {
+                    setState(() {
+                      wifiPassword = value;
+                    });
+                  },
                 ),
               ),
               SizedBox(
@@ -1050,8 +1603,39 @@ class _Wi_FiState extends State<Wi_Fi> {
                   ),
                   style: TextStyle(
                       color: Colors.black), // Yazı rengini beyaz yapar
+                  onChanged: (value) {
+                    setState(() {
+                      wifiEncryptionType = value;
+                    });
+                  },
                 ),
               ),
+              SizedBox(
+                height: 30,
+              ),
+              Row(
+                children: [
+                  Spacer(),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (wifiSSID.isNotEmpty &&
+                          wifiEncryptionType.isNotEmpty) {
+                        // Metin içeriği doluysa QR kodu görüntüleme dialogunu göster
+                        _showQRDialog();
+                      } else {
+                        // Metin içeriği boşsa kullanıcıya bir hata mesajı göstermek için bir snackbar veya alertDialog gösterebilirsiniz.
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Etkinlik adı boş olamaz.'),
+                          ),
+                        );
+                      }
+                    },
+                    child: Text('QR Kod Oluştur ve Görüntüle'),
+                  ),
+                  Spacer(),
+                ],
+              )
             ],
           ),
         ),
@@ -1117,6 +1701,58 @@ class E_Mail extends StatefulWidget {
 }
 
 class _E_MailState extends State<E_Mail> {
+  String email = ''; // E-posta adresi
+  String emailSubject = ''; // E-posta konusu
+  String emailBody = ''; // E-posta içeriği
+
+  String emailQRCodeData = '';
+
+  // QR kodu görüntülemek için dialog göstermek için bir işlev
+  void _showQRDialog() {
+    emailQRCodeData = 'mailto:$email?subject=$emailSubject&body=$emailBody';
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            'E-Posta QR Kodu Görüntüle',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image.network(
+                'https://api.qrserver.com/v1/create-qr-code/?data=$emailQRCodeData&size=200x200',
+              ),
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      // QR kodu indirmek için bir işlev ekleyin (örneğin, galeriye kaydetmek için)
+                      Navigator.of(context).pop(); // Dialog'u kapat
+                    },
+                    child: Text('İndir'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(); // Dialog'u kapat
+                    },
+                    child: Text('Kapat'),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   BannerAd? _bannerAd;
   bool _isAdLoaded = false;
   @override
@@ -1171,6 +1807,11 @@ class _E_MailState extends State<E_Mail> {
                   ),
                   style: TextStyle(
                       color: Colors.black), // Yazı rengini beyaz yapar
+                  onChanged: (value) {
+                    setState(() {
+                      email = value;
+                    });
+                  },
                 ),
               ),
               SizedBox(
@@ -1195,6 +1836,11 @@ class _E_MailState extends State<E_Mail> {
                   ),
                   style: TextStyle(
                       color: Colors.black), // Yazı rengini beyaz yapar
+                  onChanged: (value) {
+                    setState(() {
+                      emailSubject = value;
+                    });
+                  },
                 ),
               ),
               SizedBox(
@@ -1219,8 +1865,39 @@ class _E_MailState extends State<E_Mail> {
                   ),
                   style: TextStyle(
                       color: Colors.black), // Yazı rengini beyaz yapar
+                  onChanged: (value) {
+                    setState(() {
+                      emailBody = value;
+                    });
+                  },
                 ),
               ),
+              SizedBox(
+                height: 30,
+              ),
+              Row(
+                children: [
+                  Spacer(),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (email.isNotEmpty && emailBody.isNotEmpty) {
+                        // Metin içeriği doluysa QR kodu görüntüleme dialogunu göster
+                        _showQRDialog();
+                      } else {
+                        // Metin içeriği boşsa kullanıcıya bir hata mesajı göstermek için bir snackbar veya alertDialog gösterebilirsiniz.
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content:
+                                Text('Mail adresi ve mesaj alanı boş olamaz.'),
+                          ),
+                        );
+                      }
+                    },
+                    child: Text('QR Kod Oluştur ve Görüntüle'),
+                  ),
+                  Spacer(),
+                ],
+              )
             ],
           ),
         ),
@@ -1286,6 +1963,96 @@ class SMS extends StatefulWidget {
 }
 
 class _SMSState extends State<SMS> {
+  String phoneNumber = ''; // Telefon numarası
+  String smsBody = ''; // SMS içeriği
+
+  String smsQRCodeData = '';
+
+  // QR kodu görüntülemek için dialog göstermek için bir işlev
+  void _showQRDialog() {
+    smsQRCodeData = 'sms:$phoneNumber?body=$smsBody';
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            'SMS QR Kodu Görüntüle',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image.network(
+                'https://api.qrserver.com/v1/create-qr-code/?data=$smsQRCodeData&size=200x200',
+              ),
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      _downloadQRCode(); // QR kodu indirmek için bir işlev ekleyin (örneğin, galeriye kaydetmek için)
+                      Navigator.of(context).pop(); // Dialog'u kapat
+                    },
+                    child: Text('İndir'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(); // Dialog'u kapat
+                    },
+                    child: Text('Kapat'),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _downloadQRCode() async {
+    final url =
+        'https://api.qrserver.com/v1/create-qr-code/?data=$smsQRCodeData&size=200x200';
+    final response = await http.get(Uri.parse(url));
+    final bytes = response.bodyBytes;
+
+    final appDir = await getApplicationDocumentsDirectory();
+    final qrPath = appDir.path;
+    int fileIndex = 1;
+
+    // Aynı ada sahip dosya zaten varsa, bir sonraki sıraya geçin
+    while (await File('$qrPath/qr_code_$fileIndex.png').exists()) {
+      fileIndex++;
+    }
+
+    final finalQrPath = '$qrPath/qr_code_$fileIndex.png';
+
+    File(finalQrPath).writeAsBytesSync(bytes);
+
+    // Dosyayı galeriye ekleyin
+    final result = await ImageGallerySaver.saveFile(finalQrPath);
+
+    if (result != null && result.isNotEmpty) {
+      // Başarıyla kaydedildiğini bildirin
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('QR kodu galeriye kaydedildi.'),
+        ),
+      );
+    } else {
+      // Hata durumunda bildirin
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('QR kodu galeriye kaydedilemedi.'),
+        ),
+      );
+    }
+  }
+
   BannerAd? _bannerAd;
   bool _isAdLoaded = false;
   @override
@@ -1340,6 +2107,11 @@ class _SMSState extends State<SMS> {
                   ),
                   style: TextStyle(
                       color: Colors.black), // Yazı rengini beyaz yapar
+                  onChanged: (value) {
+                    setState(() {
+                      phoneNumber = value;
+                    });
+                  },
                 ),
               ),
               SizedBox(
@@ -1364,8 +2136,38 @@ class _SMSState extends State<SMS> {
                   ),
                   style: TextStyle(
                       color: Colors.black), // Yazı rengini beyaz yapar
+                  onChanged: (value) {
+                    setState(() {
+                      smsBody = value;
+                    });
+                  },
                 ),
               ),
+              SizedBox(
+                height: 30,
+              ),
+              Row(
+                children: [
+                  Spacer(),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (phoneNumber.isNotEmpty) {
+                        // Metin içeriği doluysa QR kodu görüntüleme dialogunu göster
+                        _showQRDialog();
+                      } else {
+                        // Metin içeriği boşsa kullanıcıya bir hata mesajı göstermek için bir snackbar veya alertDialog gösterebilirsiniz.
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Etkinlik adı boş olamaz.'),
+                          ),
+                        );
+                      }
+                    },
+                    child: Text('QR Kod Oluştur ve Görüntüle'),
+                  ),
+                  Spacer(),
+                ],
+              )
             ],
           ),
         ),
@@ -1431,6 +2233,13 @@ class Etkinlik extends StatefulWidget {
 }
 
 class _EtkinlikState extends State<Etkinlik> {
+  String etkinlikAdi = '';
+  String konumIsmi = '';
+  String aciklama = '';
+  DateTime? baslangicTarihi;
+  DateTime? bitisTarihi;
+  String etkinlikBilgisi = '';
+
   DateTime? _selectedDate1;
   DateTime? _selectedDate2;
   Future<void> _selectDate1(BuildContext context) async {
@@ -1457,6 +2266,130 @@ class _EtkinlikState extends State<Etkinlik> {
       setState(() {
         _selectedDate2 = picked;
       });
+  }
+
+  Future<void> _selectDate(BuildContext context, bool isbaslangicTarihi) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+    if (picked != null) {
+      setState(() {
+        if (isbaslangicTarihi) {
+          baslangicTarihi = picked;
+        } else {
+          bitisTarihi = picked;
+        }
+      });
+    }
+  }
+
+  void _showQRDialog() {
+    if (etkinlikAdi.isEmpty ||
+        konumIsmi.isEmpty ||
+        aciklama.isEmpty ||
+        baslangicTarihi == null ||
+        bitisTarihi == null) {
+      // Eksik veri olduğunda kullanıcıya bir hata mesajı göstermek için bir snackbar veya alertDialog kullanabilirsiniz.
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Lütfen eksik bilgileri doldurun.'),
+        ),
+      );
+      return;
+    }
+
+    etkinlikBilgisi = '''
+    BEGIN:VEVENT
+    SUMMARY:$etkinlikAdi
+    LOCATION:$konumIsmi
+    aciklama:$aciklama
+    DTSTART:${DateFormat('yyyyMMddTHHmmss').format(baslangicTarihi!)}
+    DTEND:${DateFormat('yyyyMMddTHHmmss').format(bitisTarihi!)}
+    END:VEVENT
+    ''';
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            'Etkinlik QR Kodu Görüntüle',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image.network(
+                'https://api.qrserver.com/v1/create-qr-code/?data=$etkinlikBilgisi&size=200x200',
+              ),
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      _downloadQRCode(); // QR kodu indirmek için bir işlev ekleyin (örneğin, galeriye kaydetmek için)
+                      Navigator.of(context).pop(); // Dialog'u kapat
+                    },
+                    child: Text('İndir'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(); // Dialog'u kapat
+                    },
+                    child: Text('Kapat'),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _downloadQRCode() async {
+    final url =
+        'https://api.qrserver.com/v1/create-qr-code/?data=$etkinlikBilgisi&size=200x200';
+    final response = await http.get(Uri.parse(url));
+    final bytes = response.bodyBytes;
+
+    final appDir = await getApplicationDocumentsDirectory();
+    final qrPath = appDir.path;
+    int fileIndex = 1;
+
+    // Aynı ada sahip dosya zaten varsa, bir sonraki sıraya geçin
+    while (await File('$qrPath/qr_code_$fileIndex.png').exists()) {
+      fileIndex++;
+    }
+
+    final finalQrPath = '$qrPath/qr_code_$fileIndex.png';
+
+    File(finalQrPath).writeAsBytesSync(bytes);
+
+    // Dosyayı galeriye ekleyin
+    final result = await ImageGallerySaver.saveFile(finalQrPath);
+
+    if (result != null && result.isNotEmpty) {
+      // Başarıyla kaydedildiğini bildirin
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('QR kodu galeriye kaydedildi.'),
+        ),
+      );
+    } else {
+      // Hata durumunda bildirin
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('QR kodu galeriye kaydedilemedi.'),
+        ),
+      );
+    }
   }
 
   BannerAd? _bannerAd;
@@ -1511,8 +2444,12 @@ class _EtkinlikState extends State<Etkinlik> {
                       color: Colors.grey,
                     )),
                   ),
-                  style: TextStyle(
-                      color: Colors.black), // Yazı rengini beyaz yapar
+                  style: TextStyle(color: Colors.black),
+                  onChanged: (value) {
+                    setState(() {
+                      etkinlikAdi = value;
+                    });
+                  }, // Yazı rengini beyaz yapar
                 ),
               ),
               SizedBox(
@@ -1537,6 +2474,11 @@ class _EtkinlikState extends State<Etkinlik> {
                   ),
                   style: TextStyle(
                       color: Colors.black), // Yazı rengini beyaz yapar
+                  onChanged: (value) {
+                    setState(() {
+                      konumIsmi = value;
+                    });
+                  },
                 ),
               ),
               SizedBox(
@@ -1561,6 +2503,11 @@ class _EtkinlikState extends State<Etkinlik> {
                   ),
                   style: TextStyle(
                       color: Colors.black), // Yazı rengini beyaz yapar
+                  onChanged: (value) {
+                    setState(() {
+                      aciklama = value;
+                    });
+                  },
                 ),
               ),
               SizedBox(
@@ -1578,7 +2525,19 @@ class _EtkinlikState extends State<Etkinlik> {
                           ),
                         ),
                         TextButton(
-                          onPressed: () => _selectDate1(context),
+                          onPressed: () {
+                            _selectDate1(context);
+                            if (_selectedDate1 != null) {
+                              setState(() {
+                                baslangicTarihi = _selectedDate1;
+                              });
+                              print(_selectedDate1);
+                              print(baslangicTarihi);
+                            }
+                            print("AA");
+                            print(_selectedDate1);
+                            print(baslangicTarihi);
+                          },
                           style: TextButton.styleFrom(
                             padding: EdgeInsets.symmetric(
                                 vertical: 10, horizontal: 20),
@@ -1604,7 +2563,14 @@ class _EtkinlikState extends State<Etkinlik> {
                           ),
                         ),
                         TextButton(
-                          onPressed: () => _selectDate2(context),
+                          onPressed: () {
+                            _selectDate2(context);
+                            if (_selectedDate2 != null) {
+                              setState(() {
+                                bitisTarihi = _selectedDate2;
+                              });
+                            }
+                          },
                           style: TextButton.styleFrom(
                             padding: EdgeInsets.symmetric(
                                 vertical: 10, horizontal: 20),
@@ -1622,6 +2588,31 @@ class _EtkinlikState extends State<Etkinlik> {
                   ),
                 ],
               ),
+              SizedBox(
+                height: 30,
+              ),
+              Row(
+                children: [
+                  Spacer(),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (etkinlikAdi.isNotEmpty) {
+                        // Metin içeriği doluysa QR kodu görüntüleme dialogunu göster
+                        _showQRDialog();
+                      } else {
+                        // Metin içeriği boşsa kullanıcıya bir hata mesajı göstermek için bir snackbar veya alertDialog gösterebilirsiniz.
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Etkinlik adı boş olamaz.'),
+                          ),
+                        );
+                      }
+                    },
+                    child: Text('QR Kod Oluştur ve Görüntüle'),
+                  ),
+                  Spacer(),
+                ],
+              )
             ],
           ),
         ),
@@ -1699,6 +2690,9 @@ class _MetinState extends State<Metin> {
         return AlertDialog(
           title: Text(
             'QR Kod Görüntüle',
+            style: TextStyle(
+              color: Colors.white,
+            ),
           ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
