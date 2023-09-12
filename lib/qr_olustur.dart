@@ -567,12 +567,7 @@ class _URLState extends State<URL> {
           icon: Icon(Icons.arrow_back),
           color: Colors.white,
           onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => MyApp(),
-              ),
-            );
+            Navigator.pop(context);
           },
         ),
       ),
@@ -833,12 +828,7 @@ class _VCardState extends State<VCard> {
           icon: Icon(Icons.arrow_back),
           color: Colors.white,
           onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => MyApp(),
-              ),
-            );
+            Navigator.pop(context);;
           },
         ),
       ),
@@ -1112,9 +1102,9 @@ class Konum extends StatefulWidget {
 }
 
 class _KonumState extends State<Konum> {
-  double latitude = 40.7128; // Enlem (Latitude)
-  double longitude = -74.0060; // Boylam (Longitude)
-  String locationName = 'New York City'; // Konum adı
+  double latitude = 1.8936080275545206; // Enlem (Latitude)
+  double longitude = -157.41142375909914; // Boylam (Longitude)
+  String locationName = 'Denizin Ortası ne bakıyon'; // Konum adı
 
   String locationQRCodeData = '';
 
@@ -1219,12 +1209,7 @@ class _KonumState extends State<Konum> {
           icon: Icon(Icons.arrow_back),
           color: Colors.white,
           onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => MyApp(),
-              ),
-            );
+            Navigator.pop(context);
           },
         ),
       ),
@@ -1401,14 +1386,14 @@ class Wi_Fi extends StatefulWidget {
 }
 
 class _Wi_FiState extends State<Wi_Fi> {
-  String wifiSSID = 'MyWiFiNetwork'; // Wi-Fi ağı adı
-  String wifiPassword = 'MyWiFiPassword'; // Wi-Fi şifresi
-  String wifiEncryptionType =
-      'WPA'; // Wi-Fi şifreleme türü (WEP, WPA, WPA2,   vb.)
+  String wifiSSID = ''; // Wi-Fi ağı adı
+  String wifiPassword = ''; // Wi-Fi şifresi
+  String wifiEncryptionType =''; // Wi-Fi şifreleme türü (WEP, WPA, WPA2,vb.)
   String wifiQRCodeData = '';
 
   void _showQRDialog() {
     wifiQRCodeData = 'WIFI:S:$wifiSSID;T:$wifiEncryptionType;P:$wifiPassword;;';
+    
 
     showDialog(
       context: context,
@@ -1508,12 +1493,7 @@ class _Wi_FiState extends State<Wi_Fi> {
           icon: Icon(Icons.arrow_back),
           color: Colors.white,
           onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => MyApp(),
-              ),
-            );
+            Navigator.pop(context);
           },
         ),
       ),
@@ -1576,7 +1556,7 @@ class _Wi_FiState extends State<Wi_Fi> {
                       color: Colors.black), // Yazı rengini beyaz yapar
                   onChanged: (value) {
                     setState(() {
-                      wifiPassword = value;
+                      wifiEncryptionType = value;
                     });
                   },
                 ),
@@ -1605,7 +1585,8 @@ class _Wi_FiState extends State<Wi_Fi> {
                       color: Colors.black), // Yazı rengini beyaz yapar
                   onChanged: (value) {
                     setState(() {
-                      wifiEncryptionType = value;
+                      wifiPassword = value;
+                      
                     });
                   },
                 ),
@@ -1626,7 +1607,7 @@ class _Wi_FiState extends State<Wi_Fi> {
                         // Metin içeriği boşsa kullanıcıya bir hata mesajı göstermek için bir snackbar veya alertDialog gösterebilirsiniz.
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text('Etkinlik adı boş olamaz.'),
+                            content: Text('SSID ve Şifreleme Türü doldurulmalıdır.'),
                           ),
                         );
                       }
@@ -1733,7 +1714,7 @@ class _E_MailState extends State<E_Mail> {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      // QR kodu indirmek için bir işlev ekleyin (örneğin, galeriye kaydetmek için)
+                      _downloadQRCode();// QR kodu indirmek için bir işlev ekleyin (örneğin, galeriye kaydetmek için)
                       Navigator.of(context).pop(); // Dialog'u kapat
                     },
                     child: Text('İndir'),
@@ -1753,6 +1734,45 @@ class _E_MailState extends State<E_Mail> {
     );
   }
 
+  Future<void> _downloadQRCode() async {
+    final url =
+        'https://api.qrserver.com/v1/create-qr-code/?data=$emailQRCodeData&size=200x200';
+    final response = await http.get(Uri.parse(url));
+    final bytes = response.bodyBytes;
+
+    final appDir = await getApplicationDocumentsDirectory();
+    final qrPath = appDir.path;
+    int fileIndex = 1;
+
+    // Aynı ada sahip dosya zaten varsa, bir sonraki sıraya geçin
+    while (await File('$qrPath/qr_code_$fileIndex.png').exists()) {
+      fileIndex++;
+    }
+
+    final finalQrPath = '$qrPath/qr_code_$fileIndex.png';
+
+    File(finalQrPath).writeAsBytesSync(bytes);
+
+    // Dosyayı galeriye ekleyin
+    final result = await ImageGallerySaver.saveFile(finalQrPath);
+
+    if (result != null && result.isNotEmpty) {
+      // Başarıyla kaydedildiğini bildirin
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('QR kodu galeriye kaydedildi.'),
+        ),
+      );
+    } else {
+      // Hata durumunda bildirin
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('QR kodu galeriye kaydedilemedi.'),
+        ),
+      );
+    }
+  }
+
   BannerAd? _bannerAd;
   bool _isAdLoaded = false;
   @override
@@ -1770,12 +1790,7 @@ class _E_MailState extends State<E_Mail> {
           icon: Icon(Icons.arrow_back),
           color: Colors.white,
           onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => MyApp(),
-              ),
-            );
+            Navigator.pop(context);
           },
         ),
       ),
@@ -2070,12 +2085,7 @@ class _SMSState extends State<SMS> {
           icon: Icon(Icons.arrow_back),
           color: Colors.white,
           onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => MyApp(),
-              ),
-            );
+            Navigator.pop(context);
           },
         ),
       ),
@@ -2249,10 +2259,11 @@ class _EtkinlikState extends State<Etkinlik> {
       firstDate: DateTime(2000),
       lastDate: DateTime(2101),
     );
-    if (picked != null && picked != _selectedDate1)
+    if (picked != null) {
       setState(() {
         _selectedDate1 = picked;
       });
+    }
   }
 
   Future<void> _selectDate2(BuildContext context) async {
@@ -2262,7 +2273,7 @@ class _EtkinlikState extends State<Etkinlik> {
       firstDate: DateTime(2000),
       lastDate: DateTime(2101),
     );
-    if (picked != null && picked != _selectedDate2)
+    if (picked != null)
       setState(() {
         _selectedDate2 = picked;
       });
@@ -2302,14 +2313,13 @@ class _EtkinlikState extends State<Etkinlik> {
     }
 
     etkinlikBilgisi = '''
-    BEGIN:VEVENT
-    SUMMARY:$etkinlikAdi
-    LOCATION:$konumIsmi
-    aciklama:$aciklama
-    DTSTART:${DateFormat('yyyyMMddTHHmmss').format(baslangicTarihi!)}
-    DTEND:${DateFormat('yyyyMMddTHHmmss').format(bitisTarihi!)}
-    END:VEVENT
-    ''';
+BEGIN:VEVENT
+SUMMARY:$etkinlikAdi
+LOCATION:$konumIsmi
+aciklama:$aciklama
+DTSTART:${DateFormat('yyyyMMddTHHmmss').format(baslangicTarihi!)}
+DTEND:${DateFormat('yyyyMMddTHHmmss').format(bitisTarihi!)}
+END:VEVENT''';
 
     showDialog(
       context: context,
@@ -2341,6 +2351,7 @@ class _EtkinlikState extends State<Etkinlik> {
                   ElevatedButton(
                     onPressed: () {
                       Navigator.of(context).pop(); // Dialog'u kapat
+                      print(etkinlikBilgisi);
                     },
                     child: Text('Kapat'),
                   ),
@@ -2409,12 +2420,7 @@ class _EtkinlikState extends State<Etkinlik> {
           icon: Icon(Icons.arrow_back),
           color: Colors.white,
           onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => MyApp(),
-              ),
-            );
+            Navigator.pop(context);
           },
         ),
       ),
@@ -2525,18 +2531,23 @@ class _EtkinlikState extends State<Etkinlik> {
                           ),
                         ),
                         TextButton(
-                          onPressed: () {
-                            _selectDate1(context);
-                            if (_selectedDate1 != null) {
+                          onPressed: () async {
+                            final DateTime? picked = await showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime(2000),
+                              lastDate: DateTime(2101),
+                            );
+
+                            if (picked != null) {
                               setState(() {
-                                baslangicTarihi = _selectedDate1;
+                                _selectedDate1 = picked;
+                                baslangicTarihi =
+                                    picked; // Tarihi seçildiği anda atama yap
                               });
                               print(_selectedDate1);
                               print(baslangicTarihi);
                             }
-                            print("AA");
-                            print(_selectedDate1);
-                            print(baslangicTarihi);
                           },
                           style: TextButton.styleFrom(
                             padding: EdgeInsets.symmetric(
@@ -2544,7 +2555,7 @@ class _EtkinlikState extends State<Etkinlik> {
                           ),
                           child: Text(
                             _selectedDate1 != null
-                                ? 'Seçilen Tarih:    ${DateFormat('dd MMM y', 'tr_TR').format(_selectedDate1!)}'
+                                ? ' ${DateFormat('dd MMM y', 'tr_TR').format(_selectedDate1!)}'
                                 : 'Tarih Seç',
                             style:
                                 TextStyle(fontSize: 16, color: Colors.blueGrey),
@@ -2563,11 +2574,19 @@ class _EtkinlikState extends State<Etkinlik> {
                           ),
                         ),
                         TextButton(
-                          onPressed: () {
-                            _selectDate2(context);
-                            if (_selectedDate2 != null) {
+                          onPressed: () async {
+                            final DateTime? picked = await showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime(2000),
+                              lastDate: DateTime(2101),
+                            );
+
+                            if (picked != null) {
                               setState(() {
-                                bitisTarihi = _selectedDate2;
+                                _selectedDate2 = picked;
+                                bitisTarihi =
+                                    picked; // Tarihi seçildiği anda atama yap
                               });
                             }
                           },
@@ -2577,7 +2596,7 @@ class _EtkinlikState extends State<Etkinlik> {
                           ),
                           child: Text(
                             _selectedDate2 != null
-                                ? 'Seçilen Tarih:    ${DateFormat('dd MMM y', 'tr_TR').format(_selectedDate2!)}'
+                                ? ' ${DateFormat('dd MMM y', 'tr_TR').format(_selectedDate2!)}'
                                 : 'Tarih Seç',
                             style:
                                 TextStyle(fontSize: 16, color: Colors.blueGrey),
@@ -2783,12 +2802,7 @@ class _MetinState extends State<Metin> {
           icon: Icon(Icons.arrow_back),
           color: Colors.white,
           onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => MyApp(),
-              ),
-            );
+            Navigator.pop(context);
           },
         ),
       ),

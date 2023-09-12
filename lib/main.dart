@@ -85,6 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _onItemTapped(int index) {
     setState(() {
+      _selectedIndex = index;
       if (index == 0) {
         Tara = true;
         Gecmis = false;
@@ -117,7 +118,6 @@ class _MyHomePageState extends State<MyHomePage> {
       }
       //kişi
       else if (qrCodeContent.startsWith("BEGIN:VCARD")) {
-        print(scanData.code!);
         controller.pauseCamera();
         _interstitialAd?.show();
         Navigator.pushReplacement(

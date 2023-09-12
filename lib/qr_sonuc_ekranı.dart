@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:qr_okuyucu/main.dart';
 import 'package:intl/intl.dart';
+import 'package:qr_okuyucu/main.dart';
 
 class sonuc_ekrani extends StatefulWidget {
   int sira;
@@ -51,11 +51,10 @@ class _sonuc_ekraniState extends State<sonuc_ekrani> {
           color: Colors.white,
           onPressed: () {
             Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => MyApp(),
-              ),
-            );
+          context,
+          MaterialPageRoute(
+              builder: (context) => MyApp()),
+        );
           },
         ),
       ),
@@ -120,6 +119,7 @@ class _sonuc_ekraniState extends State<sonuc_ekrani> {
                       }
                     },
                   ),
+                  
                 ],
               ),
             ),
@@ -200,7 +200,7 @@ class _sonuc_ekraniState extends State<sonuc_ekrani> {
                         );
                       }
                     },
-                  )
+                  ),
                 ],
               ),
             ),
@@ -264,7 +264,7 @@ class _sonuc_ekraniState extends State<sonuc_ekrani> {
                         );
                       }
                     },
-                  )
+                  ),
                 ],
               ),
             ),
@@ -332,22 +332,357 @@ class _sonuc_ekraniState extends State<sonuc_ekrani> {
         ],
       ),
       bottomNavigationBar: Container(
-        // Reklamı içeren alt bar
-        decoration: BoxDecoration(
-          color: Color(
-              0xff21254A), // Arka plan rengini istediğiniz gibi ayarlayabilirsiniz
-        ),
-        //reklam kodu
         child: SafeArea(
-          child: _isAdLoaded // _isAdLoaded değişkeni true ise reklamı göster
-              ? SizedBox(
-                  width: _bannerAd!.size.width.toDouble(),
-                  height: _bannerAd!.size.height.toDouble(),
-                  child: AdWidget(ad: _bannerAd!),
-                )
-              : SizedBox(), // Reklam yüklenmediyse boş bir SizedBox göster
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              //url
+              if (sira == 1)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: Row(
+                  children: [
+                    Spacer(),
+                    TextButton(
+                      onPressed: () {
+                        // Burada giriş işlemini gerçekleştirin
+                      },
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.symmetric(horizontal: 40),
+                        backgroundColor: Color(0xff21254A), // Arka plan rengini ayarlayın
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50), // Köşeleri yuvarlama
+                        ),
+                      ),
+                      child: Text(
+                        "Tarayıcıda Aç",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    SizedBox(width: 5,),
+                    TextButton(
+                      onPressed: () {
+                        // Burada giriş işlemini gerçekleştirin
+                      },
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.symmetric(horizontal: 40),
+                        backgroundColor: Color(0xff21254A), // Arka plan rengini ayarlayın
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50), // Köşeleri yuvarlama
+                        ),
+                      ),
+                      child: Text(
+                        "İçeriği Kopyala",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    Spacer(),
+                  ],
+                ),
+              ),
+              //kişi
+              if (sira == 2)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: Row(
+                  children: [
+                    Spacer(),
+                    TextButton(
+                      onPressed: () {
+                        // Burada giriş işlemini gerçekleştirin
+                      },
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.symmetric(horizontal: 40),
+                        backgroundColor: Color(0xff21254A), // Arka plan rengini ayarlayın
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50), // Köşeleri yuvarlama
+                        ),
+                      ),
+                      child: Text(
+                        "Lişilere Ekle",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    SizedBox(width: 5,),
+                    TextButton(
+                      onPressed: () {
+                        // Burada giriş işlemini gerçekleştirin
+                      },
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.symmetric(horizontal: 40),
+                        backgroundColor: Color(0xff21254A), // Arka plan rengini ayarlayın
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50), // Köşeleri yuvarlama
+                        ),
+                      ),
+                      child: Text(
+                        "İçeriği Kopyala",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    Spacer(),
+                  ],
+                ),
+              ),
+              //konum
+              if (sira == 3)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: Row(
+                  children: [
+                    Spacer(),
+                    TextButton(
+                      onPressed: () {
+                        // Burada giriş işlemini gerçekleştirin
+                      },
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.symmetric(horizontal: 40),
+                        backgroundColor: Color(0xff21254A), // Arka plan rengini ayarlayın
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50), // Köşeleri yuvarlama
+                        ),
+                      ),
+                      child: Text("Haritalarda Aç",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    SizedBox(width: 5,),
+                    TextButton(
+                      onPressed: () {
+                        // Burada giriş işlemini gerçekleştirin
+                      },
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.symmetric(horizontal: 40),
+                        backgroundColor: Color(0xff21254A), // Arka plan rengini ayarlayın
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50), // Köşeleri yuvarlama
+                        ),
+                      ),
+                      child: Text(
+                        "İçeriği Kopyala",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    Spacer(),
+                  ],
+                ),
+              ),
+              //wifi
+              if (sira == 4)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: Row(
+                  children: [
+                    Spacer(),
+                    TextButton(
+                      onPressed: () {
+                        // Burada giriş işlemini gerçekleştirin
+                      },
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.symmetric(horizontal: 40),
+                        backgroundColor: Color(0xff21254A), // Arka plan rengini ayarlayın
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50), // Köşeleri yuvarlama
+                        ),
+                      ),
+                      child: Text(
+                        "Bağlan",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    SizedBox(width: 5,),
+                    TextButton(
+                      onPressed: () {
+                        // Burada giriş işlemini gerçekleştirin
+                      },
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.symmetric(horizontal: 40),
+                        backgroundColor: Color(0xff21254A), // Arka plan rengini ayarlayın
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50), // Köşeleri yuvarlama
+                        ),
+                      ),
+                      child: Text(
+                        "İçeriği Kopyala",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    Spacer(),
+                  ],
+                ),
+              ),
+              //mail
+              if (sira == 5)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: Row(
+                  children: [
+                    Spacer(),
+                    TextButton(
+                      onPressed: () {
+                        // Burada giriş işlemini gerçekleştirin
+                      },
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.symmetric(horizontal: 40),
+                        backgroundColor: Color(0xff21254A), // Arka plan rengini ayarlayın
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50), // Köşeleri yuvarlama
+                        ),
+                      ),
+                      child: Text(
+                        "Eposta Gönder",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    SizedBox(width: 5,),
+                    TextButton(
+                      onPressed: () {
+                        // Burada giriş işlemini gerçekleştirin
+                      },
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.symmetric(horizontal: 40),
+                        backgroundColor: Color(0xff21254A), // Arka plan rengini ayarlayın
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50), // Köşeleri yuvarlama
+                        ),
+                      ),
+                      child: Text(
+                        "İçeriği Kopyala",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    Spacer(),
+                  ],
+                ),
+              ),
+              //SMS
+              if (sira == 6)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: Row(
+                  children: [
+                    Spacer(),
+                    TextButton(
+                      onPressed: () {
+                        // Burada giriş işlemini gerçekleştirin
+                      },
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.symmetric(horizontal: 40),
+                        backgroundColor: Color(0xff21254A), // Arka plan rengini ayarlayın
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50), // Köşeleri yuvarlama
+                        ),
+                      ),
+                      child: Text(
+                        "SMS Gönder",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    SizedBox(width: 5,),
+                    TextButton(
+                      onPressed: () {
+                        // Burada giriş işlemini gerçekleştirin
+                      },
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.symmetric(horizontal: 40),
+                        backgroundColor: Color(0xff21254A), // Arka plan rengini ayarlayın
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50), // Köşeleri yuvarlama
+                        ),
+                      ),
+                      child: Text(
+                        "İçeriği Kopyala",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    Spacer(),
+                  ],
+                ),
+              ),
+              //Etkinlik
+              if (sira == 7)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: Row(
+                  children: [
+                    Spacer(),
+                    TextButton(
+                      onPressed: () {
+                        // Burada giriş işlemini gerçekleştirin
+                      },
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.symmetric(horizontal: 40),
+                        backgroundColor: Color(0xff21254A), // Arka plan rengini ayarlayın
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50), // Köşeleri yuvarlama
+                        ),
+                      ),
+                      child: Text(
+                        "Etkinlik Oluştur",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    SizedBox(width: 5,),
+                    TextButton(
+                      onPressed: () {
+                        // Burada giriş işlemini gerçekleştirin
+                      },
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.symmetric(horizontal: 40),
+                        backgroundColor: Color(0xff21254A), // Arka plan rengini ayarlayın
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50), // Köşeleri yuvarlama
+                        ),
+                      ),
+                      child: Text(
+                        "İçeriği Kopyala",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    Spacer(),
+                  ],
+                ),
+              ),
+              //metin
+              if (sira == 8)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: Row(
+                  children: [
+                    Spacer(),
+                    TextButton(
+                      onPressed: () {
+                        // Burada giriş işlemini gerçekleştirin
+                      },
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.symmetric(horizontal: 40),
+                        backgroundColor: Color(0xff21254A), // Arka plan rengini ayarlayın
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50), // Köşeleri yuvarlama
+                        ),
+                      ),
+                      child: Text(
+                        "İçeriği Kopyala",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              // Reklam burada görüntüleniyor
+              _isAdLoaded // _isAdLoaded değişkeni true ise reklamı göster
+                    ? SizedBox(
+                        width: _bannerAd!.size.width.toDouble(),
+                        height: _bannerAd!.size.height.toDouble(),
+                        child: AdWidget(ad: _bannerAd!),
+                      )
+                    : SizedBox(),
+                     // Reklam yüklenmediyse boş bir SizedBox göster
+            ],
+          ),
         ),
       ),
+
     );
   }
 
@@ -460,6 +795,8 @@ class _sonuc_ekraniState extends State<sonuc_ekrani> {
       if (part.startsWith("S:")) {
         ssid = part.substring(2);
       } else if (part.startsWith("P:")) {
+        password = part.substring(2);
+      } else if (part.startsWith("T:")) {
         password = part.substring(2);
       }
     }
