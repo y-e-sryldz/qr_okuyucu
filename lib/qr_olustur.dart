@@ -4,7 +4,6 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:qr_okuyucu/main.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 
@@ -2168,7 +2167,7 @@ class _SMSState extends State<SMS> {
                         // Metin içeriği boşsa kullanıcıya bir hata mesajı göstermek için bir snackbar veya alertDialog gösterebilirsiniz.
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text('Etkinlik adı boş olamaz.'),
+                            content: Text('Telefon numarası boş olamaz.'),
                           ),
                         );
                       }

@@ -56,8 +56,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
-  bool Tara = false; // QRView'ı göstermek için kullanılacak değişken
-  bool Gecmis = true; //Gecmis'ı göstermek için kullanılacak değişken
+  bool Tara = true; // QRView'ı göstermek için kullanılacak değişken
   bool olustur = false; // olustur'ı göstermek için kullanılacak değişken
   String qrCodeContent = "";
 
@@ -79,7 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
     _loadAd(context); // Arka planda interstitial reklamı yükleme işlemi
   }
 
-  int _selectedIndex = 1; // İlk seçili sayfa
+  int _selectedIndex = 0; // İlk seçili sayfa
 
   Color _appBarColor = Colors.blue; // App bar rengi
 
@@ -88,15 +87,9 @@ class _MyHomePageState extends State<MyHomePage> {
       _selectedIndex = index;
       if (index == 0) {
         Tara = true;
-        Gecmis = false;
         olustur = false;
       } else if (index == 1) {
         Tara = false;
-        Gecmis = true;
-        olustur = false;
-      } else if (index == 2) {
-        Tara = false;
-        Gecmis = false;
         olustur = true;
       }
     });
@@ -207,10 +200,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 label: 'Tara',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.history),
-                label: 'Geçmiş',
-              ),
-              BottomNavigationBarItem(
                 icon: Icon(Icons.qr_code_scanner_rounded),
                 label: 'QR Oluştur',
               ),
@@ -235,15 +224,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       painter: QRFramePainter(),
                     ),
                   ),
-                ],
-              ),
-            ),
-          if (Gecmis) // QR görüntülemesi açıksa QRView widget'ını göster
-            Expanded(
-              flex: 8,
-              child: Stack(
-                children: [
-                  Text("Geçmiş yapılcak diye kalsın"),
                 ],
               ),
             ),

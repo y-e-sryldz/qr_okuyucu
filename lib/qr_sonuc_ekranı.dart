@@ -1,8 +1,13 @@
 import 'dart:io';
+import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_contacts/contact.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:intl/intl.dart';
 import 'package:qr_okuyucu/main.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class sonuc_ekrani extends StatefulWidget {
   int sira;
@@ -19,6 +24,7 @@ class _sonuc_ekraniState extends State<sonuc_ekrani> {
   String get veri => widget.veri;
   BannerAd? _bannerAd;
   bool _isAdLoaded = false;
+
   final String _adUnitId = Platform.isAndroid
       ? 'ca-app-pub-3940256099942544/6300978111'
       : 'ca-app-pub-3940256099942544/2934735716';
@@ -51,10 +57,9 @@ class _sonuc_ekraniState extends State<sonuc_ekrani> {
           color: Colors.white,
           onPressed: () {
             Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (context) => MyApp()),
-        );
+              context,
+              MaterialPageRoute(builder: (context) => MyApp()),
+            );
           },
         ),
       ),
@@ -119,7 +124,6 @@ class _sonuc_ekraniState extends State<sonuc_ekrani> {
                       }
                     },
                   ),
-                  
                 ],
               ),
             ),
@@ -182,7 +186,6 @@ class _sonuc_ekraniState extends State<sonuc_ekrani> {
                         2, // Her veri arasına bir Divider eklemek için
                     itemBuilder: (context, index) {
                       if (index.isEven) {
-                        // Değişiklik burada
                         final keyIndex = index ~/ 2;
                         final key = wifiInfo.keys.elementAt(keyIndex);
                         final value = wifiInfo[key];
@@ -336,354 +339,459 @@ class _sonuc_ekraniState extends State<sonuc_ekrani> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              //url
+              //url oldu
               if (sira == 1)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: Row(
-                  children: [
-                    Spacer(),
-                    TextButton(
-                      onPressed: () {
-                        // Burada giriş işlemini gerçekleştirin
-                      },
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.symmetric(horizontal: 40),
-                        backgroundColor: Color(0xff21254A), // Arka plan rengini ayarlayın
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50), // Köşeleri yuvarlama
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: Row(
+                    children: [
+                      Spacer(),
+                      TextButton(
+                        onPressed: () {
+                          _launchURL(
+                              veri); // Açmak istediğiniz URL'yi burada belirtin
+                        },
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.symmetric(horizontal: 40),
+                          backgroundColor:
+                              Color(0xff21254A), // Arka plan rengini ayarlayın
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(50), // Köşeleri yuvarlama
+                          ),
+                        ),
+                        child: Text(
+                          "Tarayıcıda Aç",
+                          style: TextStyle(color: Colors.white),
                         ),
                       ),
-                      child: Text(
-                        "Tarayıcıda Aç",
-                        style: TextStyle(color: Colors.white),
+                      SizedBox(
+                        width: 5,
                       ),
-                    ),
-                    SizedBox(width: 5,),
-                    TextButton(
-                      onPressed: () {
-                        // Burada giriş işlemini gerçekleştirin
-                      },
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.symmetric(horizontal: 40),
-                        backgroundColor: Color(0xff21254A), // Arka plan rengini ayarlayın
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50), // Köşeleri yuvarlama
+                      TextButton(
+                        onPressed: () {
+                          Clipboard.setData(ClipboardData(text: veri));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Metin kopyalandı!'),
+                            ),
+                          );
+                        },
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.symmetric(horizontal: 40),
+                          backgroundColor:
+                              Color(0xff21254A), // Arka plan rengini ayarlayın
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(50), // Köşeleri yuvarlama
+                          ),
+                        ),
+                        child: Text(
+                          "İçeriği Kopyala",
+                          style: TextStyle(color: Colors.white),
                         ),
                       ),
-                      child: Text(
-                        "İçeriği Kopyala",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                    Spacer(),
-                  ],
+                      Spacer(),
+                    ],
+                  ),
                 ),
-              ),
               //kişi
               if (sira == 2)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: Row(
-                  children: [
-                    Spacer(),
-                    TextButton(
-                      onPressed: () {
-                        // Burada giriş işlemini gerçekleştirin
-                      },
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.symmetric(horizontal: 40),
-                        backgroundColor: Color(0xff21254A), // Arka plan rengini ayarlayın
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50), // Köşeleri yuvarlama
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: Row(
+                    children: [
+                      Spacer(),
+                      TextButton(
+                        onPressed: ()  {
+                          
+                        },
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.symmetric(horizontal: 40),
+                          backgroundColor:
+                              Color(0xff21254A), // Arka plan rengini ayarlayın
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(50), // Köşeleri yuvarlama
+                          ),
+                        ),
+                        child: Text(
+                          "Kişilere Ekle",
+                          style: TextStyle(color: Colors.white),
                         ),
                       ),
-                      child: Text(
-                        "Lişilere Ekle",
-                        style: TextStyle(color: Colors.white),
+                      SizedBox(
+                        width: 5,
                       ),
-                    ),
-                    SizedBox(width: 5,),
-                    TextButton(
-                      onPressed: () {
-                        // Burada giriş işlemini gerçekleştirin
-                      },
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.symmetric(horizontal: 40),
-                        backgroundColor: Color(0xff21254A), // Arka plan rengini ayarlayın
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50), // Köşeleri yuvarlama
+                      TextButton(
+                        onPressed: () {
+                          Clipboard.setData(ClipboardData(text: veri));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Metin kopyalandı!'),
+                            ),
+                          );
+                        },
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.symmetric(horizontal: 40),
+                          backgroundColor:
+                              Color(0xff21254A), // Arka plan rengini ayarlayın
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(50), // Köşeleri yuvarlama
+                          ),
+                        ),
+                        child: Text(
+                          "İçeriği Kopyala",
+                          style: TextStyle(color: Colors.white),
                         ),
                       ),
-                      child: Text(
-                        "İçeriği Kopyala",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                    Spacer(),
-                  ],
+                      Spacer(),
+                    ],
+                  ),
                 ),
-              ),
-              //konum
+              //konum oldu
               if (sira == 3)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: Row(
-                  children: [
-                    Spacer(),
-                    TextButton(
-                      onPressed: () {
-                        // Burada giriş işlemini gerçekleştirin
-                      },
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.symmetric(horizontal: 40),
-                        backgroundColor: Color(0xff21254A), // Arka plan rengini ayarlayın
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50), // Köşeleri yuvarlama
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: Row(
+                    children: [
+                      Spacer(),
+                      TextButton(
+                        onPressed: () {
+                          _launchURL(veri);
+                        },
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.symmetric(horizontal: 40),
+                          backgroundColor:
+                              Color(0xff21254A), // Arka plan rengini ayarlayın
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(50), // Köşeleri yuvarlama
+                          ),
+                        ),
+                        child: Text(
+                          "Haritalarda Aç",
+                          style: TextStyle(color: Colors.white),
                         ),
                       ),
-                      child: Text("Haritalarda Aç",
-                        style: TextStyle(color: Colors.white),
+                      SizedBox(
+                        width: 5,
                       ),
-                    ),
-                    SizedBox(width: 5,),
-                    TextButton(
-                      onPressed: () {
-                        // Burada giriş işlemini gerçekleştirin
-                      },
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.symmetric(horizontal: 40),
-                        backgroundColor: Color(0xff21254A), // Arka plan rengini ayarlayın
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50), // Köşeleri yuvarlama
+                      TextButton(
+                        onPressed: () {
+                          Clipboard.setData(ClipboardData(text: veri));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Metin kopyalandı!'),
+                            ),
+                          );
+                        },
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.symmetric(horizontal: 40),
+                          backgroundColor:
+                              Color(0xff21254A), // Arka plan rengini ayarlayın
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(50), // Köşeleri yuvarlama
+                          ),
+                        ),
+                        child: Text(
+                          "İçeriği Kopyala",
+                          style: TextStyle(color: Colors.white),
                         ),
                       ),
-                      child: Text(
-                        "İçeriği Kopyala",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                    Spacer(),
-                  ],
+                      Spacer(),
+                    ],
+                  ),
                 ),
-              ),
               //wifi
               if (sira == 4)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: Row(
-                  children: [
-                    Spacer(),
-                    TextButton(
-                      onPressed: () {
-                        // Burada giriş işlemini gerçekleştirin
-                      },
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.symmetric(horizontal: 40),
-                        backgroundColor: Color(0xff21254A), // Arka plan rengini ayarlayın
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50), // Köşeleri yuvarlama
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: Row(
+                    children: [
+                      Spacer(),
+                      TextButton(
+                        onPressed: () {
+                          String ssid = wifiInfo["SSID"] ??
+                              ""; // SSID'yi al, eğer bilgi yoksa boş bir dize kullan
+                          String password = wifiInfo["Şifre"] ??
+                              ""; // Şifreyi al, eğer bilgi yoksa boş bir dize kullan
+                        },
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.symmetric(horizontal: 40),
+                          backgroundColor:
+                              Color(0xff21254A), // Arka plan rengini ayarlayın
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(50), // Köşeleri yuvarlama
+                          ),
+                        ),
+                        child: Text(
+                          "Bağlan",
+                          style: TextStyle(color: Colors.white),
                         ),
                       ),
-                      child: Text(
-                        "Bağlan",
-                        style: TextStyle(color: Colors.white),
+                      SizedBox(
+                        width: 5,
                       ),
-                    ),
-                    SizedBox(width: 5,),
-                    TextButton(
-                      onPressed: () {
-                        // Burada giriş işlemini gerçekleştirin
-                      },
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.symmetric(horizontal: 40),
-                        backgroundColor: Color(0xff21254A), // Arka plan rengini ayarlayın
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50), // Köşeleri yuvarlama
+                      TextButton(
+                        onPressed: () {
+                          Clipboard.setData(ClipboardData(text: veri));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Metin kopyalandı!'),
+                            ),
+                          );
+                        },
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.symmetric(horizontal: 40),
+                          backgroundColor:
+                              Color(0xff21254A), // Arka plan rengini ayarlayın
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(50), // Köşeleri yuvarlama
+                          ),
+                        ),
+                        child: Text(
+                          "İçeriği Kopyala",
+                          style: TextStyle(color: Colors.white),
                         ),
                       ),
-                      child: Text(
-                        "İçeriği Kopyala",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                    Spacer(),
-                  ],
+                      Spacer(),
+                    ],
+                  ),
                 ),
-              ),
               //mail
               if (sira == 5)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: Row(
-                  children: [
-                    Spacer(),
-                    TextButton(
-                      onPressed: () {
-                        // Burada giriş işlemini gerçekleştirin
-                      },
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.symmetric(horizontal: 40),
-                        backgroundColor: Color(0xff21254A), // Arka plan rengini ayarlayın
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50), // Köşeleri yuvarlama
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: Row(
+                    children: [
+                      Spacer(),
+                      TextButton(
+                        onPressed: () {
+                          // Burada giriş işlemini gerçekleştirin
+                        },
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.symmetric(horizontal: 40),
+                          backgroundColor:
+                              Color(0xff21254A), // Arka plan rengini ayarlayın
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(50), // Köşeleri yuvarlama
+                          ),
+                        ),
+                        child: Text(
+                          "Eposta Gönder",
+                          style: TextStyle(color: Colors.white),
                         ),
                       ),
-                      child: Text(
-                        "Eposta Gönder",
-                        style: TextStyle(color: Colors.white),
+                      SizedBox(
+                        width: 5,
                       ),
-                    ),
-                    SizedBox(width: 5,),
-                    TextButton(
-                      onPressed: () {
-                        // Burada giriş işlemini gerçekleştirin
-                      },
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.symmetric(horizontal: 40),
-                        backgroundColor: Color(0xff21254A), // Arka plan rengini ayarlayın
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50), // Köşeleri yuvarlama
+                      TextButton(
+                        onPressed: () {
+                          Clipboard.setData(ClipboardData(text: veri));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Metin kopyalandı!'),
+                            ),
+                          );
+                        },
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.symmetric(horizontal: 40),
+                          backgroundColor:
+                              Color(0xff21254A), // Arka plan rengini ayarlayın
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(50), // Köşeleri yuvarlama
+                          ),
+                        ),
+                        child: Text(
+                          "İçeriği Kopyala",
+                          style: TextStyle(color: Colors.white),
                         ),
                       ),
-                      child: Text(
-                        "İçeriği Kopyala",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                    Spacer(),
-                  ],
+                      Spacer(),
+                    ],
+                  ),
                 ),
-              ),
               //SMS
               if (sira == 6)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: Row(
-                  children: [
-                    Spacer(),
-                    TextButton(
-                      onPressed: () {
-                        // Burada giriş işlemini gerçekleştirin
-                      },
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.symmetric(horizontal: 40),
-                        backgroundColor: Color(0xff21254A), // Arka plan rengini ayarlayın
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50), // Köşeleri yuvarlama
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: Row(
+                    children: [
+                      Spacer(),
+                      TextButton(
+                        onPressed: () {},
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.symmetric(horizontal: 40),
+                          backgroundColor:
+                              Color(0xff21254A), // Arka plan rengini ayarlayın
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(50), // Köşeleri yuvarlama
+                          ),
+                        ),
+                        child: Text(
+                          "SMS Gönder",
+                          style: TextStyle(color: Colors.white),
                         ),
                       ),
-                      child: Text(
-                        "SMS Gönder",
-                        style: TextStyle(color: Colors.white),
+                      SizedBox(
+                        width: 5,
                       ),
-                    ),
-                    SizedBox(width: 5,),
-                    TextButton(
-                      onPressed: () {
-                        // Burada giriş işlemini gerçekleştirin
-                      },
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.symmetric(horizontal: 40),
-                        backgroundColor: Color(0xff21254A), // Arka plan rengini ayarlayın
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50), // Köşeleri yuvarlama
+                      TextButton(
+                        onPressed: () {
+                          Clipboard.setData(ClipboardData(text: veri));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Metin kopyalandı!'),
+                            ),
+                          );
+                        },
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.symmetric(horizontal: 40),
+                          backgroundColor:
+                              Color(0xff21254A), // Arka plan rengini ayarlayın
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(50), // Köşeleri yuvarlama
+                          ),
+                        ),
+                        child: Text(
+                          "İçeriği Kopyala",
+                          style: TextStyle(color: Colors.white),
                         ),
                       ),
-                      child: Text(
-                        "İçeriği Kopyala",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                    Spacer(),
-                  ],
+                      Spacer(),
+                    ],
+                  ),
                 ),
-              ),
               //Etkinlik
               if (sira == 7)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: Row(
-                  children: [
-                    Spacer(),
-                    TextButton(
-                      onPressed: () {
-                        // Burada giriş işlemini gerçekleştirin
-                      },
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.symmetric(horizontal: 40),
-                        backgroundColor: Color(0xff21254A), // Arka plan rengini ayarlayın
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50), // Köşeleri yuvarlama
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: Row(
+                    children: [
+                      Spacer(),
+                      TextButton(
+                        onPressed: () {
+                          // Burada giriş işlemini gerçekleştirin
+                        },
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.symmetric(horizontal: 40),
+                          backgroundColor:
+                              Color(0xff21254A), // Arka plan rengini ayarlayın
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(50), // Köşeleri yuvarlama
+                          ),
+                        ),
+                        child: Text(
+                          "Etkinlik Oluştur",
+                          style: TextStyle(color: Colors.white),
                         ),
                       ),
-                      child: Text(
-                        "Etkinlik Oluştur",
-                        style: TextStyle(color: Colors.white),
+                      SizedBox(
+                        width: 5,
                       ),
-                    ),
-                    SizedBox(width: 5,),
-                    TextButton(
-                      onPressed: () {
-                        // Burada giriş işlemini gerçekleştirin
-                      },
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.symmetric(horizontal: 40),
-                        backgroundColor: Color(0xff21254A), // Arka plan rengini ayarlayın
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50), // Köşeleri yuvarlama
+                      TextButton(
+                        onPressed: () {
+                          Clipboard.setData(ClipboardData(text: veri));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Metin kopyalandı!'),
+                            ),
+                          );
+                        },
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.symmetric(horizontal: 40),
+                          backgroundColor:
+                              Color(0xff21254A), // Arka plan rengini ayarlayın
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(50), // Köşeleri yuvarlama
+                          ),
+                        ),
+                        child: Text(
+                          "İçeriği Kopyala",
+                          style: TextStyle(color: Colors.white),
                         ),
                       ),
-                      child: Text(
-                        "İçeriği Kopyala",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                    Spacer(),
-                  ],
+                      Spacer(),
+                    ],
+                  ),
                 ),
-              ),
-              //metin
+              //metin oldu
               if (sira == 8)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: Row(
-                  children: [
-                    Spacer(),
-                    TextButton(
-                      onPressed: () {
-                        // Burada giriş işlemini gerçekleştirin
-                      },
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.symmetric(horizontal: 40),
-                        backgroundColor: Color(0xff21254A), // Arka plan rengini ayarlayın
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50), // Köşeleri yuvarlama
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: Row(
+                    children: [
+                      Spacer(),
+                      TextButton(
+                        onPressed: () {
+                          Clipboard.setData(ClipboardData(text: veri));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Metin kopyalandı!'),
+                            ),
+                          );
+                        },
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.symmetric(horizontal: 40),
+                          backgroundColor:
+                              Color(0xff21254A), // Arka plan rengini ayarlayın
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(50), // Köşeleri yuvarlama
+                          ),
+                        ),
+                        child: Text(
+                          "İçeriği Kopyala",
+                          style: TextStyle(color: Colors.white),
                         ),
                       ),
-                      child: Text(
-                        "İçeriği Kopyala",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
               // Reklam burada görüntüleniyor
               _isAdLoaded // _isAdLoaded değişkeni true ise reklamı göster
-                    ? SizedBox(
-                        width: _bannerAd!.size.width.toDouble(),
-                        height: _bannerAd!.size.height.toDouble(),
-                        child: AdWidget(ad: _bannerAd!),
-                      )
-                    : SizedBox(),
-                     // Reklam yüklenmediyse boş bir SizedBox göster
+                  ? SizedBox(
+                      width: _bannerAd!.size.width.toDouble(),
+                      height: _bannerAd!.size.height.toDouble(),
+                      child: AdWidget(ad: _bannerAd!),
+                    )
+                  : SizedBox(),
+              // Reklam yüklenmediyse boş bir SizedBox göster
             ],
           ),
         ),
       ),
-
     );
+  }
+
+
+  Future<void> _launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'URL açılamadı: $url';
+    }
+  }
+
+  void openMap(double latitude, double longitude) async {
+    final url =
+        'https://www.google.com/maps/search/?api=1&query=$latitude,$longitude';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Harita açılamadı: $url';
+    }
   }
 
   void _loadAd() async {
@@ -790,6 +898,7 @@ class _sonuc_ekraniState extends State<sonuc_ekrani> {
     List<String> parts = wifiContent.split(';');
     String ssid = "";
     String password = "";
+    String typee = "";
 
     for (String part in parts) {
       if (part.startsWith("S:")) {
@@ -797,12 +906,15 @@ class _sonuc_ekraniState extends State<sonuc_ekrani> {
       } else if (part.startsWith("P:")) {
         password = part.substring(2);
       } else if (part.startsWith("T:")) {
-        password = part.substring(2);
+        typee = part.substring(2);
       }
     }
 
     if (ssid.isNotEmpty) {
       wifiInfo["SSID"] = ssid;
+    }
+    if (typee.isNotEmpty) {
+      wifiInfo["Şifreleme Türü"] = typee;
     }
     if (password.isNotEmpty) {
       wifiInfo["Şifre"] = password;
