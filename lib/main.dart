@@ -65,11 +65,11 @@ class _MyHomePageState extends State<MyHomePage> {
   InterstitialAd? _interstitialAd;
   BannerAd? _bannerAd;
   final String _adUnitId1 = Platform.isAndroid
-      ? 'ca-app-pub-3940256099942544/6300978111'
-      : 'ca-app-pub-3940256099942544/2934735716';
+      ? 'ca-app-pub-2879037848915108/4460279365'
+      : '';
   final String _adUnitId = Platform.isAndroid
-      ? 'ca-app-pub-3940256099942544/1033173712'
-      : 'ca-app-pub-3940256099942544/4411468910';
+      ? 'ca-app-pub-2879037848915108/7844990602'
+      : '';
 
   @override
   void initState() {

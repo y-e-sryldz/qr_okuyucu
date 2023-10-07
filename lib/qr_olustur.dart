@@ -10,7 +10,7 @@ import 'package:image_gallery_saver/image_gallery_saver.dart';
 //banner reklam
 final String _adUnitId = Platform.isAndroid
     ? 'ca-app-pub-3940256099942544/6300978111'
-    : 'ca-app-pub-3940256099942544/2934735716';
+    : '';
 
 Expanded qr_olustur(BuildContext context) {
   return Expanded(
