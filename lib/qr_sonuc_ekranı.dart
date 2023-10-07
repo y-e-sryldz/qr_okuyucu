@@ -404,7 +404,24 @@ class _sonuc_ekraniState extends State<sonuc_ekrani> {
                       Spacer(),
                       TextButton(
                         onPressed: ()  {
-                          
+                          // Uyarı gösterme işlemleri burada gerçekleşecek
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('Özellik Güncelleme Bildirimi', style: TextStyle(color: Colors.white)),
+                                content: Text('Bu özellik bir sonraki güncelleme ile gelecektir.', style: TextStyle(color: const Color.fromARGB(255, 218, 218, 218))),
+                                actions: <Widget>[
+                                  TextButton(
+                                    child: Text('Tamam', style: TextStyle(color: Colors.white)),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
                         },
                         style: TextButton.styleFrom(
                           padding: EdgeInsets.symmetric(horizontal: 40),
@@ -514,10 +531,24 @@ class _sonuc_ekraniState extends State<sonuc_ekrani> {
                       Spacer(),
                       TextButton(
                         onPressed: () {
-                          String ssid = wifiInfo["SSID"] ??
-                              ""; // SSID'yi al, eğer bilgi yoksa boş bir dize kullan
-                          String password = wifiInfo["Şifre"] ??
-                              ""; // Şifreyi al, eğer bilgi yoksa boş bir dize kullan
+                          // Uyarı gösterme işlemleri burada gerçekleşecek
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('Özellik Güncelleme Bildirimi', style: TextStyle(color: Colors.white)),
+                                content: Text('Bu özellik bir sonraki güncelleme ile gelecektir.', style: TextStyle(color: const Color.fromARGB(255, 218, 218, 218))),
+                                actions: <Widget>[
+                                  TextButton(
+                                    child: Text('Tamam', style: TextStyle(color: Colors.white)),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
                         },
                         style: TextButton.styleFrom(
                           padding: EdgeInsets.symmetric(horizontal: 40),
@@ -572,7 +603,24 @@ class _sonuc_ekraniState extends State<sonuc_ekrani> {
                       Spacer(),
                       TextButton(
                         onPressed: () {
-                          // Burada giriş işlemini gerçekleştirin
+                          // Uyarı gösterme işlemleri burada gerçekleşecek
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('Özellik Güncelleme Bildirimi', style: TextStyle(color: Colors.white)),
+                                content: Text('Bu özellik bir sonraki güncelleme ile gelecektir.', style: TextStyle(color: const Color.fromARGB(255, 218, 218, 218))),
+                                actions: <Widget>[
+                                  TextButton(
+                                    child: Text('Tamam', style: TextStyle(color: Colors.white)),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
                         },
                         style: TextButton.styleFrom(
                           padding: EdgeInsets.symmetric(horizontal: 40),
@@ -626,7 +674,26 @@ class _sonuc_ekraniState extends State<sonuc_ekrani> {
                     children: [
                       Spacer(),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          // Uyarı gösterme işlemleri burada gerçekleşecek
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('Özellik Güncelleme Bildirimi', style: TextStyle(color: Colors.white)),
+                                content: Text('Bu özellik bir sonraki güncelleme ile gelecektir.', style: TextStyle(color: const Color.fromARGB(255, 218, 218, 218))),
+                                actions: <Widget>[
+                                  TextButton(
+                                    child: Text('Tamam', style: TextStyle(color: Colors.white)),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
                         style: TextButton.styleFrom(
                           padding: EdgeInsets.symmetric(horizontal: 40),
                           backgroundColor:
@@ -680,7 +747,24 @@ class _sonuc_ekraniState extends State<sonuc_ekrani> {
                       Spacer(),
                       TextButton(
                         onPressed: () {
-                          // Burada giriş işlemini gerçekleştirin
+                          // Uyarı gösterme işlemleri burada gerçekleşecek
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('Özellik Güncelleme Bildirimi', style: TextStyle(color: Colors.white)),
+                                content: Text('Bu özellik bir sonraki güncelleme ile gelecektir.', style: TextStyle(color: const Color.fromARGB(255, 218, 218, 218))),
+                                actions: <Widget>[
+                                  TextButton(
+                                    child: Text('Tamam', style: TextStyle(color: Colors.white)),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
                         },
                         style: TextButton.styleFrom(
                           padding: EdgeInsets.symmetric(horizontal: 40),
